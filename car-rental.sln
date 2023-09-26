@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Car Rental.App", "Car Rental.App\Car Rental.App.csproj", "{CF3A7F50-CE5B-41C6-8658-88B4FA42E448}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Car Rental.App", "Car Rental.App\Car Rental.App.csproj", "{CF3A7F50-CE5B-41C6-8658-88B4FA42E448}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Car Rental.Common", "Car Rental.Common\Car Rental.Common.csproj", "{D6BAB204-DB11-4A52-BED6-C753BC7BA716}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Car Rental.Business", "Car Rental.Business\Car Rental.Business.csproj", "{26B70118-96E2-40FF-8794-89ABCA17A84D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Car Rental.Data", "Car Rental.Data\Car Rental.Data.csproj", "{7A7D0E2E-D4BB-4D8B-8C80-1736D0B9ECF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{CF3A7F50-CE5B-41C6-8658-88B4FA42E448}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF3A7F50-CE5B-41C6-8658-88B4FA42E448}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF3A7F50-CE5B-41C6-8658-88B4FA42E448}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6BAB204-DB11-4A52-BED6-C753BC7BA716}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6BAB204-DB11-4A52-BED6-C753BC7BA716}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6BAB204-DB11-4A52-BED6-C753BC7BA716}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6BAB204-DB11-4A52-BED6-C753BC7BA716}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26B70118-96E2-40FF-8794-89ABCA17A84D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26B70118-96E2-40FF-8794-89ABCA17A84D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26B70118-96E2-40FF-8794-89ABCA17A84D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26B70118-96E2-40FF-8794-89ABCA17A84D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A7D0E2E-D4BB-4D8B-8C80-1736D0B9ECF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A7D0E2E-D4BB-4D8B-8C80-1736D0B9ECF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A7D0E2E-D4BB-4D8B-8C80-1736D0B9ECF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A7D0E2E-D4BB-4D8B-8C80-1736D0B9ECF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
