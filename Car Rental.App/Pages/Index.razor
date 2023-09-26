@@ -1,5 +1,40 @@
 ﻿@page "/"
+@using Car_Rental.Business.Classes;
+@inject BookingProcessor bp;
 
 <PageTitle>Car Rental</PageTitle>
 
 <h1>Car Rental</h1>
+
+<table style="max-width: 1100px;" class="table table-bordered table-hover caption-top">
+    <caption>Vehicles</caption>
+    <thead>
+        <tr>
+            <th>Registration Number</th>
+            <th>Make</th>
+            <th>Odometer</th>
+            <th>Cost / Km</th>
+            <th>Type</th>
+            <th>Cost / Day</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    @foreach (var vehicle in bp.GetVehicles())
+    {
+        <tbody>
+            <tr>
+                <td class="fw-bold">@vehicle.RegNo</td>
+                <td>@vehicle.Make</td>
+                <td>@vehicle.Odometer</td>
+                <td>@vehicle.CostKm</td>
+                <td>@vehicle.Type</td>
+                <td>@vehicle.CostDay</td>
+                <td>
+                    <span class="badge @(vehicle.Status == VehicleStatuses.Available ? "text-bg-dark" : "text-bg-danger")">
+                        @vehicle.Status
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    }
+</table>
