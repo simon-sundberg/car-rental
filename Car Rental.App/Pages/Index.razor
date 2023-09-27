@@ -6,7 +6,7 @@
 
 <h1>Car Rental</h1>
 
-<table style="max-width: 1100px;" class="table table-bordered table-hover caption-top">
+<table style="max-width: 1000px;" class="table table-bordered table-hover caption-top">
     <caption>Vehicles</caption>
     <thead>
         <tr>
@@ -39,14 +39,49 @@
     }
 </table>
 
-<table style="max-width: 1100px;" class="table table-bordered table-hover caption-top">
+<table style="max-width: 1000px;" class="table table-bordered table-hover caption-top">
+    <caption>Bookings</caption>
+    <thead>
+        <tr>
+            <th>Registration Number</th>
+            <th>Customer</th>
+            <th>Km Rented</th>
+            <th>Km Returned</th>
+            <th>Rented</th>
+            <th>Returned</th>
+            <th>Cost</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    @foreach (var booking in bp.GetBookings())
+    {
+        <tbody>
+            <tr>
+                <td class="fw-bold">@booking.Vehicle.RegNo</td>
+                <td>@booking.Customer.LastName @booking.Customer.FirstName (@booking.Customer.SSN)</td>
+                <td>@booking.KmRented</td>
+                <td>@booking.KmReturned</td>
+                <td>@booking.DateRented.ToString("d\\/M\\/yyyy")</td>
+                <td>@(booking.DateReturned is null ? "" : Convert.ToDateTime(booking.DateReturned).ToString("d\\/M\\/yyyy"))</td>
+                <td>@booking.Cost</td>
+                <td>
+                    <span class="badge @(booking.DateReturned is null ? "text-bg-danger" : "text-bg-success")">
+                        @(booking.DateReturned is null ? "Open" : "Closed")
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    }
+</table>
+
+<table style="max-width: 500px;" class="table table-bordered table-hover caption-top">
     <caption>Customers</caption>
     <thead>
         <tr>
             <th>SSN</th>
             <th>Last Name</th>
             <th>First Name</th>
- 
+
         </tr>
     </thead>
     @foreach (var customer in bp.GetCustomers())
