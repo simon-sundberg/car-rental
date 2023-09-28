@@ -6,20 +6,13 @@ namespace Car_Rental.Data.Classes;
 
 public class CollectionData : IData
 {
-
     readonly List<IVehicle> _vehicles = new();
     readonly List<IPerson> _customers = new();
     readonly List<IBooking> _bookings = new();
-    public List<IVehicle> GetVehicles() => _vehicles;
-    public List<IPerson> GetCustomers() => _customers;
-
-    public List<IBooking> GetBookings() => _bookings;
-
     public CollectionData()
     {
         SeedData();
     }
-
     void SeedData()
     {
         _vehicles.Add(new Car("ABC123", "Volvo", 10000, 1, VehicleTypes.Combi, 200, VehicleStatuses.Available));
@@ -33,7 +26,12 @@ public class CollectionData : IData
 
         _bookings.Add(new Booking(_vehicles[2], _customers[0], 1000, new DateTime(2023, 9, 9)));
         _bookings.Add(new Booking(_vehicles[3], _customers[1], 5000, new DateTime(2023, 9, 9)));
-
         _bookings[1].ReturnVehicle(5000, new DateTime(2023, 9, 9));
     }
+    public List<IVehicle> GetVehicles() => _vehicles;
+    public List<IVehicle> GetVehicles(VehicleStatuses status)
+        => _vehicles.FindAll(vehicle => vehicle.Status == status);
+    public List<IPerson> GetCustomers() => _customers;
+    public List<IBooking> GetBookings() => _bookings;
+
 }

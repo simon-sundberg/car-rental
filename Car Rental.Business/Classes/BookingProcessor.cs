@@ -4,18 +4,10 @@ using Car_Rental.Data.Interfaces;
 namespace Car_Rental.Business.Classes;
 public class BookingProcessor
 {
-    readonly List<IVehicle> _vehicles;
-    readonly List<IPerson> _customers;
-    readonly List<IBooking> _bookings;
-    public List<IVehicle> GetVehicles() => _vehicles;
-    public List<IPerson> GetCustomers() => _customers;
-    public List<IBooking> GetBookings() => _bookings;
-
-    public BookingProcessor(IData data)
-    {
-        _vehicles = data.GetVehicles();
-        _customers = data.GetCustomers();
-        _bookings = data.GetBookings();
-    }
-
+    readonly IData _db;
+    public List<IVehicle> GetVehicles() => _db.GetVehicles();
+    public List<IVehicle> GetVehicles(VehicleStatuses status) => _db.GetVehicles(status);
+    public List<IPerson> GetCustomers() => _db.GetCustomers();
+    public List<IBooking> GetBookings() => _db.GetBookings();
+    public BookingProcessor(IData data) => _db = data;
 }
