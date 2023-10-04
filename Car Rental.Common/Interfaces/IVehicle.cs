@@ -2,11 +2,12 @@
 
 public interface IVehicle
 {
-    public string RegNo { get; init; }
-    public string Make { get; init; }
-    public int Odometer { get; set; }
-    public double CostKm { get; set; }
-    public VehicleTypes Type { get; init; }
-    public double CostDay { get; set; }
-    public VehicleStatuses Status { get; set; }
+    int Id { get; init; }
+    string RegNo { get; init; }
+    string Make { get; init; }
+    int Odometer { get; set; }
+    double CostKm { get; set; }
+    VehicleTypes Type { get; init; }
+    double CostDay { get; set; }
+    VehicleStatuses Status { get; set; }
 }

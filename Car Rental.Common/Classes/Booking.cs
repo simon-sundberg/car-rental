@@ -4,6 +4,7 @@ namespace Car_Rental.Common.Classes;
 
 public class Booking : IBooking
 {
+    public int Id { get; init; }
     public IVehicle Vehicle { get; init; }
     public IPerson Customer { get; init; }
     public int KmRented { get; init; }
@@ -12,8 +13,9 @@ public class Booking : IBooking
     public DateTime? DateReturned { get; set; }
     public double? Cost { get; set; }
 
-    public Booking(IVehicle vehicle, IPerson customer, int kmRented, DateTime dateRented)
+    public Booking(int id, IVehicle vehicle, IPerson customer, int kmRented, DateTime dateRented)
     {
+        Id = id;
         Vehicle = vehicle;
         Customer = customer;
         KmRented = kmRented;

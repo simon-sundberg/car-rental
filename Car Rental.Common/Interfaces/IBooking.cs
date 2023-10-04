@@ -2,6 +2,7 @@
 
 public interface IBooking
 {
+    int Id { get; init; }
     IVehicle Vehicle { get; init; }
     IPerson Customer { get; init; }
     int KmRented { get; init; }

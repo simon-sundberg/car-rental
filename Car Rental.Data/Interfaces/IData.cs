@@ -3,8 +3,8 @@
 namespace Car_Rental.Data.Interfaces;
 public interface IData
 {
-    public List<IVehicle> GetVehicles();
-    public List<IVehicle> GetVehicles(VehicleStatuses status);
-    public List<IPerson> GetCustomers();
-    public List<IBooking> GetBookings();
+    List<IVehicle> GetVehicles();
+    List<IVehicle> GetVehicles(VehicleStatuses status);
+    List<IPerson> GetCustomers();
+    List<IBooking> GetBookings();
 }
