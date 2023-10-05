@@ -12,7 +12,6 @@ public class Booking : IBooking
     public DateTime DateRented { get; init; }
     public DateTime? DateReturned { get; set; }
     public double? Cost { get; set; }
-
     public Booking(int id, IVehicle vehicle, IPerson customer, int kmRented, DateTime dateRented)
     {
         Id = id;
@@ -21,7 +20,6 @@ public class Booking : IBooking
         KmRented = kmRented;
         DateRented = dateRented;
     }
-
     public void ReturnVehicle(int kmReturned, DateTime dateReturned)
     {
         KmReturned = kmReturned;
@@ -31,5 +29,4 @@ public class Booking : IBooking
         int days = DateTime.Compare(DateRented, dateReturned) + 1;
         Cost = days * Vehicle.CostDay + km * Vehicle.CostKm;
     }
-
 }

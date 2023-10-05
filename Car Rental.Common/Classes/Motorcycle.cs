@@ -12,7 +12,6 @@ public class Motorcycle : IVehicle
     public double CostDay { get; set; }
     public VehicleStatuses Status { get; set; }
     public VehicleTypes Type { get; init; }
-
     public Motorcycle(int id, string regNo, string make, int odometer, double costKm, double costDay, VehicleStatuses status)
     {
         Id = id;

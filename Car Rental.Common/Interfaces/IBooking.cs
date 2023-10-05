@@ -10,6 +10,5 @@ public interface IBooking
     DateTime DateRented { get; init; }
     DateTime? DateReturned { get; set; }
     double? Cost { get; set; }
-
     void ReturnVehicle(int kmReturned, DateTime dateReturned);
 }

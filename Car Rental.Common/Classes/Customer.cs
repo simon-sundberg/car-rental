@@ -8,7 +8,6 @@ public class Customer : IPerson
     public string SSN { get; init; }
     public string LastName { get; set; }
     public string FirstName { get; set; }
-
     public Customer(int id, string ssn, string lastName, string firstName)
     {
         Id = id;
