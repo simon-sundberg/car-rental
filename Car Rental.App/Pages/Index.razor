@@ -6,12 +6,12 @@
 
 <h1>Car Rental</h1>
 
-@if (bp.DisplayAddVehicleErrors && bp.GetAddVehicleFormErrors().Count > 0)
+@if (bp.AddVehicleButtonWasClicked && bp.AddVehicleForm.GetValidationErrors().Count > 0)
 {
     <div class="alert alert-danger" role="alert">
         <h3 class="mb-4">Input errors when adding a vehicle</h3>
         <ul>
-            @foreach (var error in bp.GetAddVehicleFormErrors())
+            @foreach (var error in bp.AddVehicleForm.GetValidationErrors())
             {
                 <li>@error</li>
             }
@@ -36,20 +36,20 @@
     <tbody>
         <tr>
             <td>
-                <input @bind="bp.AddVehicleData.RegNo" type="text" placeholder="RegNo" />
+                <input @bind="bp.AddVehicleForm.RegNo" type="text" placeholder="RegNo" />
             </td>
             <td>
-                <input @bind="bp.AddVehicleData.Make" type="text" placeholder="Make" />
+                <input @bind="bp.AddVehicleForm.Make" type="text" placeholder="Make" />
             </td>
             <td>
-                <input @bind="bp.AddVehicleData.Odometer" type="number" placeholder="Odometer" />
+                <input @bind="bp.AddVehicleForm.Odometer" type="number" placeholder="Odometer" />
             </td>
             <td>
-                <input @bind="bp.AddVehicleData.CostKm" type="number" placeholder="Cost / Km" />
+                <input @bind="bp.AddVehicleForm.CostKm" type="number" placeholder="Cost / Km" />
             </td>
             <td>
-                @* <input @bind="bp.AddVehicleData.Type" type="text" placeholder="Type" /> *@
-                <select @bind="bp.AddVehicleData.Type">
+                @* <input @bind="bp.AddVehicleForm.Type" type="text" placeholder="Type" /> *@
+                <select @bind="bp.AddVehicleForm.Type">
                     <option selected></option>
                     @foreach (var type in Enum.GetNames(typeof(VehicleTypes)))
                     {
@@ -58,7 +58,7 @@
                 </select>
             </td>
             <td>
-                <input @bind="bp.AddVehicleData.CostDay" type="number" placeholder="Cost / Day" />
+                <input @bind="bp.AddVehicleForm.CostDay" type="number" placeholder="Cost / Day" />
             </td>
             <td>
                 <button @onclick="bp.OnAddVehicleSubmit" class="btn btn-sm btn-outline-success">Add</button>
