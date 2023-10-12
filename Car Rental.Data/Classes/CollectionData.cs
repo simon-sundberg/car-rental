@@ -28,14 +28,17 @@ public class CollectionData : IData
         _bookings.Add(new Booking(NextBookingId, _vehicles[3], _persons[1], 5000, new DateTime(2023, 9, 9)));
         _bookings[1].ReturnVehicle(5000, new DateTime(2023, 9, 9));
     }
+    public int NextVehicleId => _vehicles.Count.Equals(0) ? 1 : _vehicles.Max(v => v.Id) + 1;
+    public int NextBookingId => _bookings.Count.Equals(0) ? 1 : _bookings.Max(b => b.Id) + 1;
+    public int NextPersonId => _persons.Count.Equals(0) ? 1 : _persons.Max(p => p.Id) + 1;
     public List<IVehicle> GetVehicles() => _vehicles;
     public List<IVehicle> GetVehicles(VehicleStatuses status)
         => _vehicles.FindAll(vehicle => vehicle.Status == status);
     public List<IPerson> GetCustomers() => _persons;
     public List<IBooking> GetBookings() => _bookings;
-
-    public int NextVehicleId => _vehicles.Count.Equals(0) ? 1 : _vehicles.Max(v => v.Id) + 1;
-    public int NextBookingId => _bookings.Count.Equals(0) ? 1 : _bookings.Max(b => b.Id) + 1;
-    public int NextPersonId => _persons.Count.Equals(0) ? 1 : _persons.Max(p => p.Id) + 1;
-
+    public void AddVehicle(string regNo, string make, int odometer, double costKm, VehicleTypes type, double costDay)
+    {
+        // todo: check if regNo already exists
+        _vehicles.Add(new Car(NextVehicleId, regNo.ToUpper(), make, odometer, costKm, type, costDay, VehicleStatuses.Available));
+    }
 }
