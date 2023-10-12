@@ -48,7 +48,6 @@
                 <input @bind="bp.AddVehicleForm.CostKm" type="number" placeholder="Cost / Km" />
             </td>
             <td>
-                @* <input @bind="bp.AddVehicleForm.Type" type="text" placeholder="Type" /> *@
                 <select @bind="bp.AddVehicleForm.Type">
                     <option selected></option>
                     @foreach (var type in Enum.GetNames(typeof(VehicleTypes)))
@@ -139,6 +138,19 @@
     }
 </table>
 
+@if (bp.AddCustomerButtonWasClicked && bp.AddCustomerForm.GetValidationErrors().Count > 0)
+{
+    <div class="alert alert-danger" role="alert">
+        <h3 class="mb-4">Input errors when adding a customer</h3>
+        <ul>
+            @foreach (var error in bp.AddCustomerForm.GetValidationErrors())
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+
 <table class="table table-bordered table-hover caption-top w-auto">
     <caption>Customers</caption>
     <thead>
@@ -151,14 +163,14 @@
     <tbody>
         <tr>
             <td>
-                <input type="text" placeholder="SSN" />
+                <input @bind="bp.AddCustomerForm.SSN" type="text" placeholder="SSN" />
             </td>
             <td>
-                <input type="text" placeholder="Last Name" />
+                <input @bind="bp.AddCustomerForm.LastName" type="text" placeholder="Last Name" />
             </td>
             <td>
-                <input type="text" placeholder="First Name" />
-                <button class="btn btn-sm btn-outline-success">Add</button>
+                <input @bind="bp.AddCustomerForm.FirstName" type="text" placeholder="First Name" />
+                <button @onclick="bp.OnAddCustomerSubmit" class="btn btn-sm btn-outline-success">Add</button>
             </td>
         </tr>
         @foreach (var customer in bp.GetCustomers())

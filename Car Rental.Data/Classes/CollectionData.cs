@@ -21,8 +21,8 @@ public class CollectionData : IData
         _vehicles.Add(new Car(NextVehicleId, "JKL012", "Jeep", 5000, 1.5, VehicleTypes.Van, 300, VehicleStatuses.Available));
         _vehicles.Add(new Motorcycle(NextVehicleId, "MNO234", "Yamaha", 30000, 0.5, 50, VehicleStatuses.Available));
 
-        _persons.Add(new Customer(NextPersonId, "12345", "Doe", "John"));
-        _persons.Add(new Customer(NextPersonId, "98765", "Doe", "Jane"));
+        _persons.Add(new Customer(NextPersonId, 5705031819, "Doe", "John"));
+        _persons.Add(new Customer(NextPersonId, 9110182663, "Doe", "Jane"));
 
         _bookings.Add(new Booking(NextBookingId, _vehicles[2], _persons[0], 1000, new DateTime(2023, 9, 9)));
         _bookings.Add(new Booking(NextBookingId, _vehicles[3], _persons[1], 5000, new DateTime(2023, 9, 9)));
@@ -32,12 +32,19 @@ public class CollectionData : IData
     public int NextBookingId => _bookings.Count.Equals(0) ? 1 : _bookings.Max(b => b.Id) + 1;
     public int NextPersonId => _persons.Count.Equals(0) ? 1 : _persons.Max(p => p.Id) + 1;
 
+    public IPerson? GetCustomer(double ssn) => _persons.SingleOrDefault(p => p.SSN == ssn);
     public IVehicle? GetVehicle(string regNo) => _vehicles.SingleOrDefault(v => v.RegNo == regNo.ToUpper());
     public List<IVehicle> GetVehicles() => _vehicles;
     public List<IVehicle> GetVehicles(VehicleStatuses status)
         => _vehicles.FindAll(vehicle => vehicle.Status == status);
     public List<IPerson> GetCustomers() => _persons;
     public List<IBooking> GetBookings() => _bookings;
+    public void AddCustomer(double ssn, string lastName, string firstName)
+    {
+        if (GetCustomer(ssn) != null)
+            return;
+        _persons.Add(new Customer(NextPersonId, ssn, lastName, firstName));
+    }
     public void AddVehicle(string regNo, string make, int odometer, double costKm, VehicleTypes type, double costDay)
     {
         if (GetVehicle(regNo) != null)
