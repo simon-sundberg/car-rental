@@ -6,7 +6,7 @@ namespace Car_Rental.Data.Classes;
 
 public class CollectionData : IData
 {
-    readonly List<IVehicle> _vehicles = new();
+    readonly List<Vehicle> _vehicles = new();
     readonly List<IPerson> _persons = new();
     readonly List<IBooking> _bookings = new();
     public CollectionData()
@@ -33,9 +33,9 @@ public class CollectionData : IData
     public int NextPersonId => _persons.Count.Equals(0) ? 1 : _persons.Max(p => p.Id) + 1;
 
     public IPerson? GetCustomer(string ssn) => _persons.SingleOrDefault(p => p.SSN == ssn);
-    public IVehicle? GetVehicle(string regNo) => _vehicles.SingleOrDefault(v => v.RegNo == regNo.ToUpper());
-    public List<IVehicle> GetVehicles() => _vehicles;
-    public List<IVehicle> GetVehicles(VehicleStatuses status)
+    public Vehicle? GetVehicle(string regNo) => _vehicles.SingleOrDefault(v => v.RegNo == regNo.ToUpper());
+    public List<Vehicle> GetVehicles() => _vehicles;
+    public List<Vehicle> GetVehicles(VehicleStatuses status)
         => _vehicles.FindAll(vehicle => vehicle.Status == status);
     public List<IPerson> GetCustomers() => _persons;
     public List<IBooking> GetBookings() => _bookings;

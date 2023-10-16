@@ -1,9 +1,11 @@
-﻿namespace Car_Rental.Common.Interfaces;
+﻿using Car_Rental.Common.Classes;
+
+namespace Car_Rental.Common.Interfaces;
 
 public interface IBooking
 {
     int Id { get; init; }
-    IVehicle Vehicle { get; init; }
+    Vehicle Vehicle { get; init; }
     IPerson Customer { get; init; }
     int KmRented { get; init; }
     int? KmReturned { get; set; }

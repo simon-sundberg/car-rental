@@ -1,10 +1,11 @@
-﻿using Car_Rental.Common.Interfaces;
+﻿using Car_Rental.Common.Classes;
+using Car_Rental.Common.Interfaces;
 
 namespace Car_Rental.Data.Interfaces;
 public interface IData
 {
-    List<IVehicle> GetVehicles();
-    List<IVehicle> GetVehicles(VehicleStatuses status);
+    List<Vehicle> GetVehicles();
+    List<Vehicle> GetVehicles(VehicleStatuses status);
     List<IPerson> GetCustomers();
     List<IBooking> GetBookings();
     void AddCustomer(string ssn, string lastName, string firstName);
