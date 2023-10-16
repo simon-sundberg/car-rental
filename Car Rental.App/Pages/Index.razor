@@ -1,23 +1,24 @@
 ﻿@page "/"
 @using Car_Rental.Business.Classes;
+@using Car_Rental.Common.Classes;
 @inject BookingProcessor bp;
 
 <PageTitle>Car Rental</PageTitle>
 
 <h1>Car Rental</h1>
 
-@if (bp.AddVehicleButtonWasClicked && bp.AddVehicleForm.GetValidationErrors().Count > 0)
+@* @if (bp.AddVehicleButtonWasClicked && BookingProcessor.GetVehicleFormErrors().Count > 0)
 {
     <div class="alert alert-danger" role="alert">
         <h3 class="mb-4">Input errors when adding a vehicle</h3>
         <ul>
-            @foreach (var error in bp.AddVehicleForm.GetValidationErrors())
+            @foreach (var error in BookingProcessor.GetVehicleFormErrors())
             {
                 <li>@error</li>
             }
         </ul>
     </div>
-}
+} *@
 
 <table class="table table-bordered table-hover caption-top w-auto">
     <caption>Vehicles</caption>
@@ -138,12 +139,12 @@
     }
 </table>
 
-@if (bp.AddCustomerButtonWasClicked && bp.AddCustomerForm.GetValidationErrors().Count > 0)
+@if (bp.AddCustomerButtonWasClicked && BookingProcessor.GetCustomerFormErrors(customerForm).Count > 0)
 {
     <div class="alert alert-danger" role="alert">
         <h3 class="mb-4">Input errors when adding a customer</h3>
         <ul>
-            @foreach (var error in bp.AddCustomerForm.GetValidationErrors())
+            @foreach (var error in BookingProcessor.GetCustomerFormErrors(customerForm))
             {
                 <li>@error</li>
             }
@@ -163,14 +164,14 @@
     <tbody>
         <tr>
             <td>
-                <input @bind="bp.AddCustomerForm.SSN" type="text" placeholder="SSN" />
+                <input @bind="customerForm.SSN" type="text" placeholder="SSN" />
             </td>
             <td>
-                <input @bind="bp.AddCustomerForm.LastName" type="text" placeholder="Last Name" />
+                <input @bind="customerForm.LastName" type="text" placeholder="Last Name" />
             </td>
             <td>
-                <input @bind="bp.AddCustomerForm.FirstName" type="text" placeholder="First Name" />
-                <button @onclick="bp.OnAddCustomerSubmit" class="btn btn-sm btn-outline-success">Add</button>
+                <input @bind="customerForm.FirstName" type="text" placeholder="First Name" />
+                <button @onclick="() => bp.OnAddCustomerSubmit(customerForm)" class="btn btn-sm btn-outline-success">Add</button>
             </td>
         </tr>
         @foreach (var customer in bp.GetCustomers())
@@ -183,3 +184,7 @@
         }
     </tbody>
 </table>
+
+@code {
+    Customer customerForm = new();
+}

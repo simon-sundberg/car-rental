@@ -6,7 +6,6 @@ public class BookingProcessor
 {
     readonly IData _db;
     public AddVehicleForm AddVehicleForm = new();
-    public AddCustomerForm AddCustomerForm = new();
     public bool AddCustomerButtonWasClicked { get; private set; }
     public bool AddVehicleButtonWasClicked { get; private set; }
     public BookingProcessor(IData db) => _db = db;
@@ -14,17 +13,19 @@ public class BookingProcessor
     public List<IVehicle> GetVehicles(VehicleStatuses status) => _db.GetVehicles(status);
     public List<IPerson> GetCustomers() => _db.GetCustomers();
     public List<IBooking> GetBookings() => _db.GetBookings();
-    public void OnAddCustomerSubmit()
+    public static List<String> GetCustomerFormErrors(IPerson form) => Validation.GetCustomerFormErrors(form);
+    public static List<String> GetVehicleFormErrors(IVehicle form) => Validation.GetVehicleFormErrors(form);
+    public void OnAddCustomerSubmit(IPerson form)
     {
-        AddCustomerForm form = AddCustomerForm;
-        if (form.GetValidationErrors().Count > 0)
+        if (Validation.GetCustomerFormErrors(form).Count > 0)
         {
             AddCustomerButtonWasClicked = true;
             return;
         }
-        _db.AddCustomer(Convert.ToDouble(form.SSN),
-                        form.LastName ?? throw new ArgumentNullException(nameof(form.LastName)),
-                        form.FirstName ?? throw new ArgumentNullException(nameof(form.FirstName)));
+        _db.AddCustomer(form.SSN.Length > 0 ? form.SSN : throw new ArgumentException(nameof(form.SSN)),
+                        form.LastName ?? throw new ArgumentException(nameof(form.LastName)),
+                        form.FirstName ?? throw new ArgumentException(nameof(form.FirstName)))
+        ;
         AddCustomerButtonWasClicked = false;
     }
     public void OnAddVehicleSubmit()
