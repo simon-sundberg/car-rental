@@ -15,6 +15,8 @@ public class BookingProcessor
     public List<IBooking> GetBookings() => _db.GetBookings();
     public static List<String> GetCustomerFormErrors(IPerson form) => Validation.GetCustomerFormErrors(form);
     public static List<String> GetVehicleFormErrors(Vehicle form) => Validation.GetVehicleFormErrors(form);
+    public string[] VehicleStatusNames => _db.VehicleStatusNames;
+    public string[] VehicleTypeNames => _db.VehicleTypeNames;
     public void OnReturnVehicleSubmit(Vehicle vehicle, int? kmDistance)
     {
         if (kmDistance is null)

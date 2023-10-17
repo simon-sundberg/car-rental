@@ -50,7 +50,7 @@
             </td>
             <td>
                 <select @bind="vehicleForm.Type">
-                    @foreach (var type in Enum.GetNames(typeof(VehicleTypes)))
+                    @foreach (var type in bp.VehicleTypeNames)
                     {
                         <option>@type</option>
                     }
