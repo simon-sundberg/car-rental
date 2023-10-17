@@ -7,12 +7,12 @@
 
 <h1>Car Rental</h1>
 
-@if (bp.AddVehicleButtonWasClicked && BookingProcessor.GetVehicleFormErrors(vehicleForm).Count > 0)
+@if (bp.AddVehicleButtonWasClicked && bp.VehicleFormErrors.Count > 0)
 {
     <div class="alert alert-danger" role="alert">
         <h3 class="mb-4">Input errors when adding a vehicle</h3>
         <ul>
-            @foreach (var error in BookingProcessor.GetVehicleFormErrors(vehicleForm))
+            @foreach (var error in bp.VehicleFormErrors)
             {
                 <li>@error</li>
             }
@@ -37,19 +37,19 @@
     <tbody>
         <tr>
             <td>
-                <input @bind="vehicleForm.RegNo" type="text" placeholder="RegNo" />
+                <input @bind="bp.vehicleForm.RegNo" type="text" placeholder="RegNo" />
             </td>
             <td>
-                <input @bind="vehicleForm.Make" type="text" placeholder="Make" />
+                <input @bind="bp.vehicleForm.Make" type="text" placeholder="Make" />
             </td>
             <td>
-                <input @bind="vehicleForm.Odometer" type="number" placeholder="Odometer" />
+                <input @bind="bp.vehicleForm.Odometer" type="number" placeholder="Odometer" />
             </td>
             <td>
-                <input @bind="vehicleForm.CostKm" type="number" placeholder="Cost / Km" />
+                <input @bind="bp.vehicleForm.CostKm" type="number" placeholder="Cost / Km" />
             </td>
             <td>
-                <select @bind="vehicleForm.Type">
+                <select @bind="bp.vehicleForm.Type">
                     @foreach (var type in bp.VehicleTypeNames)
                     {
                         <option>@type</option>
@@ -57,10 +57,10 @@
                 </select>
             </td>
             <td>
-                <input @bind="vehicleForm.CostDay" type="number" placeholder="Cost / Day" />
+                <input @bind="bp.vehicleForm.CostDay" type="number" placeholder="Cost / Day" />
             </td>
             <td>
-                <button @onclick="() => bp.OnAddVehicleSubmit(vehicleForm)" class="btn btn-sm btn-outline-success">Add</button>
+                <button @onclick="bp.OnAddVehicleSubmit" class="btn btn-sm btn-outline-success">Add</button>
             </td>
             <td>
             </td>
@@ -78,19 +78,19 @@
                 <td>
                     @if (vehicle.Status == VehicleStatuses.Available)
                     {
-                        <select @bind="rentingCustomerSSN" aria-label="Renting customer">
+                        <select @bind="bp.rentingCustomerSSN" aria-label="Renting customer">
                             <option selected></option>
                             @foreach (var customer in bp.GetCustomers())
                             {
                                 <option value="@customer.SSN">@customer.LastName @customer.FirstName (@customer.SSN)</option>
                             }
                         </select>
-                        <button disabled="@(String.IsNullOrEmpty(rentingCustomerSSN))" @onclick="(() => bp.OnRentVehicleSubmit(vehicle, rentingCustomerSSN))" class="btn btn-sm btn-outline-primary">Rent</button>
+                        <button disabled="@(String.IsNullOrEmpty(bp.rentingCustomerSSN))" @onclick="(() => bp.OnRentVehicleSubmit(vehicle, bp.rentingCustomerSSN))" class="btn btn-sm btn-outline-primary">Rent</button>
                     }
                     else
                     {
-                        <input @bind="returnDistance" style="max-width: 140px;" type="number" placeholder="Distance">
-                        <button disabled="@(returnDistance is null)" @onclick="(() => bp.OnReturnVehicleSubmit(vehicle, returnDistance))" class="btn btn-sm btn-outline-success">Return</button>
+                        <input @bind="bp.returnDistance" style="max-width: 140px;" type="number" placeholder="Distance">
+                        <button disabled="@(bp.returnDistance is null)" @onclick="(() => bp.OnReturnVehicleSubmit(vehicle, bp.returnDistance))" class="btn btn-sm btn-outline-success">Return</button>
                     }
                 </td>
                 <td>
@@ -138,12 +138,12 @@
     }
 </table>
 
-@if (bp.AddCustomerButtonWasClicked && BookingProcessor.GetCustomerFormErrors(customerForm).Count > 0)
+@if (bp.AddCustomerButtonWasClicked && bp.CustomerFormErrors.Count > 0)
 {
     <div class="alert alert-danger" role="alert">
         <h3 class="mb-4">Input errors when adding a customer</h3>
         <ul>
-            @foreach (var error in BookingProcessor.GetCustomerFormErrors(customerForm))
+            @foreach (var error in bp.CustomerFormErrors)
             {
                 <li>@error</li>
             }
@@ -163,14 +163,14 @@
     <tbody>
         <tr>
             <td>
-                <input @bind="customerForm.SSN" type="text" placeholder="SSN" />
+                <input @bind="bp.customerForm.SSN" type="text" placeholder="SSN" />
             </td>
             <td>
-                <input @bind="customerForm.LastName" type="text" placeholder="Last Name" />
+                <input @bind="bp.customerForm.LastName" type="text" placeholder="Last Name" />
             </td>
             <td>
-                <input @bind="customerForm.FirstName" type="text" placeholder="First Name" />
-                <button @onclick="() => bp.OnAddCustomerSubmit(customerForm)" class="btn btn-sm btn-outline-success">Add</button>
+                <input @bind="bp.customerForm.FirstName" type="text" placeholder="First Name" />
+                <button @onclick="bp.OnAddCustomerSubmit" class="btn btn-sm btn-outline-success">Add</button>
             </td>
         </tr>
         @foreach (var customer in bp.GetCustomers())
@@ -183,10 +183,3 @@
         }
     </tbody>
 </table>
-
-@code {
-    Customer customerForm = new();
-    Vehicle vehicleForm = new();
-    string? rentingCustomerSSN = null;
-    int? returnDistance = null;
-}

@@ -6,6 +6,11 @@ namespace Car_Rental.Business.Classes;
 public class BookingProcessor
 {
     readonly IData _db;
+
+    public Customer customerForm = new();
+    public Vehicle vehicleForm = new();
+    public string? rentingCustomerSSN = null;
+    public int? returnDistance = null;
     public bool AddCustomerButtonWasClicked { get; private set; }
     public bool AddVehicleButtonWasClicked { get; private set; }
     public BookingProcessor(IData db) => _db = db;
@@ -13,8 +18,8 @@ public class BookingProcessor
     public List<Vehicle> GetVehicles(VehicleStatuses status) => _db.GetVehicles(status);
     public List<IPerson> GetCustomers() => _db.GetCustomers();
     public List<IBooking> GetBookings() => _db.GetBookings();
-    public static List<String> GetCustomerFormErrors(IPerson form) => Validation.GetCustomerFormErrors(form);
-    public static List<String> GetVehicleFormErrors(Vehicle form) => Validation.GetVehicleFormErrors(form);
+    public List<String> CustomerFormErrors => Validation.GetCustomerFormErrors(customerForm);
+    public List<String> VehicleFormErrors => Validation.GetVehicleFormErrors(vehicleForm);
     public string[] VehicleStatusNames => _db.VehicleStatusNames;
     public string[] VehicleTypeNames => _db.VehicleTypeNames;
     public void OnReturnVehicleSubmit(Vehicle vehicle, int? kmDistance)
@@ -31,8 +36,9 @@ public class BookingProcessor
         IPerson customer = _db.GetCustomer(customerSSN) ?? throw new ArgumentException("Didn't find a customer with the provided SSN.");
         _db.AddBooking(vehicle, customer);
     }
-    public void OnAddCustomerSubmit(IPerson form)
+    public void OnAddCustomerSubmit()
     {
+        Customer form = customerForm;
         if (Validation.GetCustomerFormErrors(form).Count > 0)
         {
             AddCustomerButtonWasClicked = true;
@@ -43,8 +49,9 @@ public class BookingProcessor
                         form.FirstName.Length > 0 ? form.FirstName : throw new ArgumentException(nameof(form.FirstName)));
         AddCustomerButtonWasClicked = false;
     }
-    public void OnAddVehicleSubmit(Vehicle form)
+    public void OnAddVehicleSubmit()
     {
+        Vehicle form = vehicleForm;
         if (Validation.GetVehicleFormErrors(form).Count > 0)
         {
             AddVehicleButtonWasClicked = true;
