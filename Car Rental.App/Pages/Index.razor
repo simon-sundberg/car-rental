@@ -7,18 +7,7 @@
 
 <h1>Car Rental</h1>
 
-@if (bp.AddVehicleButtonWasClicked && bp.VehicleFormErrors.Count > 0)
-{
-    <div class="alert alert-danger" role="alert">
-        <h3 class="mb-4">Input errors when adding a vehicle</h3>
-        <ul>
-            @foreach (var error in bp.VehicleFormErrors)
-            {
-                <li>@error</li>
-            }
-        </ul>
-    </div>
-}
+<ErrorList Title="Errors when adding a vehicle" Errors="bp.VehicleFormErrors" ShowIfErrors="bp.AddVehicleButtonWasClicked" />
 
 <table class="table table-bordered table-hover caption-top w-auto">
     <caption>Vehicles</caption>
@@ -138,18 +127,7 @@
     }
 </table>
 
-@if (bp.AddCustomerButtonWasClicked && bp.CustomerFormErrors.Count > 0)
-{
-    <div class="alert alert-danger" role="alert">
-        <h3 class="mb-4">Input errors when adding a customer</h3>
-        <ul>
-            @foreach (var error in bp.CustomerFormErrors)
-            {
-                <li>@error</li>
-            }
-        </ul>
-    </div>
-}
+<ErrorList Title="Errors when adding a customer" Errors="bp.CustomerFormErrors" ShowIfErrors="bp.AddCustomerButtonWasClicked" />
 
 <table class="table table-bordered table-hover caption-top w-auto">
     <caption>Customers</caption>
