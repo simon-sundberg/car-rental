@@ -1,4 +1,5 @@
-﻿using Car_Rental.Common.Interfaces;
+﻿using Car_Rental.Common.Extensions;
+using Car_Rental.Common.Interfaces;
 
 namespace Car_Rental.Common.Classes;
 
@@ -23,7 +24,7 @@ public class Booking : IBooking
     public void ReturnVehicle(int kmDistance)
     {
         DateOnly today = DateOnly.FromDateTime(DateTime.Today);
-        int days = today.DayNumber - DateRented.DayNumber + 1;
+        int days = today.Duration(DateRented) + 1;
         Cost = days * Vehicle.CostDay + kmDistance * Vehicle.CostKm;
         KmReturned = KmRented + kmDistance;
         DateReturned = today;
