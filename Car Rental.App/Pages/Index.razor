@@ -78,14 +78,14 @@
                 <td>
                     @if (vehicle.Status == VehicleStatuses.Available)
                     {
-                        <select aria-label="Renting customer">
+                        <select @bind="rentingCustomerSSN" aria-label="Renting customer">
                             <option selected></option>
                             @foreach (var customer in bp.GetCustomers())
                             {
-                                <option>@customer.LastName @customer.FirstName (@customer.SSN)</option>
+                                <option value="@customer.SSN">@customer.LastName @customer.FirstName (@customer.SSN)</option>
                             }
                         </select>
-                        <button class="btn btn-sm btn-outline-primary">Rent</button>
+                        <button disabled="@(String.IsNullOrEmpty(rentingCustomerSSN))" @onclick="(() => bp.RentVehicle(vehicle, rentingCustomerSSN))" class="btn btn-sm btn-outline-primary">Rent</button>
                     }
                     else
                     {
@@ -187,4 +187,5 @@
 @code {
     Customer customerForm = new();
     Vehicle vehicleForm = new();
+    string? rentingCustomerSSN = null;
 }

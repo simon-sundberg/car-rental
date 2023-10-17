@@ -15,6 +15,15 @@ public class BookingProcessor
     public List<IBooking> GetBookings() => _db.GetBookings();
     public static List<String> GetCustomerFormErrors(IPerson form) => Validation.GetCustomerFormErrors(form);
     public static List<String> GetVehicleFormErrors(Vehicle form) => Validation.GetVehicleFormErrors(form);
+    public void RentVehicle(Vehicle vehicle, string customerSSN)
+    {
+        if (vehicle is null)
+            throw new ArgumentNullException(nameof(vehicle));
+        if (customerSSN is null)
+            throw new ArgumentNullException(nameof(customerSSN));
+        IPerson customer = _db.GetCustomer(customerSSN) ?? throw new ArgumentException("Didn't find a customer with the provided SSN.");
+        _db.AddBooking(vehicle, customer);
+    }
     public void OnAddCustomerSubmit(IPerson form)
     {
         if (Validation.GetCustomerFormErrors(form).Count > 0)

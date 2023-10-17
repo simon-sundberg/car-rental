@@ -39,6 +39,13 @@ public class CollectionData : IData
         => _vehicles.FindAll(vehicle => vehicle.Status == status);
     public List<IPerson> GetCustomers() => _persons;
     public List<IBooking> GetBookings() => _bookings;
+    public void AddBooking(Vehicle vehicle, IPerson customer)
+    {
+        if (vehicle.Status == VehicleStatuses.Booked)
+            return;
+        _bookings.Add(new Booking(NextBookingId, vehicle, customer, vehicle.Odometer, DateTime.Today));
+        vehicle.Status = VehicleStatuses.Booked;
+    }
     public void AddCustomer(string ssn, string lastName, string firstName)
     {
         if (GetCustomer(ssn) != null)
