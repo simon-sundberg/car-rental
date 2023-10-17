@@ -1,4 +1,5 @@
 ﻿using Car_Rental.Common.Classes;
+using Car_Rental.Common.Extensions;
 using Car_Rental.Common.Interfaces;
 using Car_Rental.Data.Interfaces;
 
@@ -18,8 +19,8 @@ public class BookingProcessor
     public List<Vehicle> GetVehicles(VehicleStatuses status) => _db.GetVehicles(status);
     public List<IPerson> GetCustomers() => _db.GetCustomers();
     public List<IBooking> GetBookings() => _db.GetBookings();
-    public List<String> CustomerFormErrors => Validation.GetCustomerFormErrors(customerForm);
-    public List<String> VehicleFormErrors => Validation.GetVehicleFormErrors(vehicleForm);
+    public List<String> CustomerFormErrors => customerForm.GetErrors();
+    public List<String> VehicleFormErrors => vehicleForm.GetErrors();
     public string[] VehicleStatusNames => _db.VehicleStatusNames;
     public string[] VehicleTypeNames => _db.VehicleTypeNames;
     public void OnReturnVehicleSubmit(Vehicle vehicle, int? kmDistance)
@@ -39,7 +40,7 @@ public class BookingProcessor
     public void OnAddCustomerSubmit()
     {
         Customer form = customerForm;
-        if (Validation.GetCustomerFormErrors(form).Count > 0)
+        if (customerForm.GetErrors().Count > 0)
         {
             AddCustomerButtonWasClicked = true;
             return;
@@ -52,7 +53,7 @@ public class BookingProcessor
     public void OnAddVehicleSubmit()
     {
         Vehicle form = vehicleForm;
-        if (Validation.GetVehicleFormErrors(form).Count > 0)
+        if (vehicleForm.GetErrors().Count > 0)
         {
             AddVehicleButtonWasClicked = true;
             return;
