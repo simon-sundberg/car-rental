@@ -85,12 +85,12 @@
                                 <option value="@customer.SSN">@customer.LastName @customer.FirstName (@customer.SSN)</option>
                             }
                         </select>
-                        <button disabled="@(String.IsNullOrEmpty(rentingCustomerSSN))" @onclick="(() => bp.RentVehicle(vehicle, rentingCustomerSSN))" class="btn btn-sm btn-outline-primary">Rent</button>
+                        <button disabled="@(String.IsNullOrEmpty(rentingCustomerSSN))" @onclick="(() => bp.OnRentVehicleSubmit(vehicle, rentingCustomerSSN))" class="btn btn-sm btn-outline-primary">Rent</button>
                     }
                     else
                     {
-                        <input style="max-width: 140px;" type="number" placeholder="Distance">
-                        <button class="btn btn-sm btn-outline-success">Return</button>
+                        <input @bind="returnDistance" style="max-width: 140px;" type="number" placeholder="Distance">
+                        <button disabled="@(returnDistance is null)" @onclick="(() => bp.OnReturnVehicleSubmit(vehicle, returnDistance))" class="btn btn-sm btn-outline-success">Return</button>
                     }
                 </td>
                 <td>
@@ -125,8 +125,8 @@
                 <td>@booking.Customer.LastName @booking.Customer.FirstName (@booking.Customer.SSN)</td>
                 <td>@booking.KmRented</td>
                 <td>@booking.KmReturned</td>
-                <td>@booking.DateRented.ToString("d\\/M\\/yyyy")</td>
-                <td>@(booking.DateReturned is null ? "" : Convert.ToDateTime(booking.DateReturned).ToString("d\\/M\\/yyyy"))</td>
+                <td>@booking.DateRented.ToString()</td>
+                <td>@booking.DateReturned.ToString()</td>
                 <td>@booking.Cost</td>
                 <td>
                     <span class="badge @(booking.DateReturned is null ? "text-bg-danger" : "text-bg-success")">
@@ -188,4 +188,5 @@
     Customer customerForm = new();
     Vehicle vehicleForm = new();
     string? rentingCustomerSSN = null;
+    int? returnDistance = null;
 }

@@ -24,14 +24,15 @@ public class CollectionData : IData
         _persons.Add(new Customer(NextPersonId, "195705031819", "Doe", "John"));
         _persons.Add(new Customer(NextPersonId, "199110182663", "Doe", "Jane"));
 
-        _bookings.Add(new Booking(NextBookingId, _vehicles[2], _persons[0], 1000, new DateTime(2023, 9, 9)));
-        _bookings.Add(new Booking(NextBookingId, _vehicles[3], _persons[1], 5000, new DateTime(2023, 9, 9)));
-        _bookings[1].ReturnVehicle(5000, new DateTime(2023, 9, 9));
+        _bookings.Add(new Booking(NextBookingId, _vehicles[2], _persons[0], 1000));
+        _bookings.Add(new Booking(NextBookingId, _vehicles[3], _persons[1], 5000));
+        _bookings[1].ReturnVehicle(0);
     }
     public int NextVehicleId => _vehicles.Count.Equals(0) ? 1 : _vehicles.Max(v => v.Id) + 1;
     public int NextBookingId => _bookings.Count.Equals(0) ? 1 : _bookings.Max(b => b.Id) + 1;
     public int NextPersonId => _persons.Count.Equals(0) ? 1 : _persons.Max(p => p.Id) + 1;
 
+    public IBooking? GetBooking(string regNo) => _bookings.LastOrDefault(b => b.Vehicle.RegNo == regNo);
     public IPerson? GetCustomer(string ssn) => _persons.SingleOrDefault(p => p.SSN == ssn);
     public Vehicle? GetVehicle(string regNo) => _vehicles.SingleOrDefault(v => v.RegNo == regNo.ToUpper());
     public List<Vehicle> GetVehicles() => _vehicles;
@@ -43,7 +44,7 @@ public class CollectionData : IData
     {
         if (vehicle.Status == VehicleStatuses.Booked)
             return;
-        _bookings.Add(new Booking(NextBookingId, vehicle, customer, vehicle.Odometer, DateTime.Today));
+        _bookings.Add(new Booking(NextBookingId, vehicle, customer, vehicle.Odometer));
         vehicle.Status = VehicleStatuses.Booked;
     }
     public void AddCustomer(string ssn, string lastName, string firstName)

@@ -9,6 +9,7 @@ public interface IData
     List<Vehicle> GetVehicles(VehicleStatuses status);
     IPerson? GetCustomer(string ssn);
     List<IPerson> GetCustomers();
+    IBooking? GetBooking(string regNo);
     List<IBooking> GetBookings();
     void AddBooking(Vehicle vehicle, IPerson customer);
     void AddCustomer(string ssn, string lastName, string firstName);

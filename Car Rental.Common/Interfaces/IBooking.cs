@@ -9,8 +9,8 @@ public interface IBooking
     IPerson Customer { get; init; }
     int KmRented { get; init; }
     int? KmReturned { get; set; }
-    DateTime DateRented { get; init; }
-    DateTime? DateReturned { get; set; }
+    DateOnly DateRented { get; init; }
+    DateOnly? DateReturned { get; set; }
     double? Cost { get; set; }
-    void ReturnVehicle(int kmReturned, DateTime dateReturned);
+    void ReturnVehicle(int kmDistance);
 }
