@@ -39,6 +39,7 @@
             </td>
             <td>
                 <select @bind="bp.vehicleForm.Type">
+                    <option selected hidden disabled>Select type</option>
                     @foreach (var type in bp.VehicleTypeNames)
                     {
                         <option>@type</option>
@@ -68,7 +69,7 @@
                     @if (vehicle.Status == VehicleStatuses.Available)
                     {
                         <select @bind="bp.rentingCustomerSSN" aria-label="Renting customer">
-                            <option selected></option>
+                            <option selected hidden disabled>Select customer</option>
                             @foreach (var customer in bp.GetCustomers())
                             {
                                 <option value="@customer.SSN">@customer.LastName @customer.FirstName (@customer.SSN)</option>

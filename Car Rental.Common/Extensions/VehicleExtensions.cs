@@ -17,6 +17,8 @@ public static class VehicleExtensions
             errors.Add("Odometer must be a positive number");
         if (vehicle.CostKm <= 0)
             errors.Add("Cost / Km must be a positive number");
+        if (vehicle.Type is null)
+            errors.Add("Type is required");
         if (vehicle.CostDay <= 0)
             errors.Add("Cost / Day must be a positive number");
         return errors;

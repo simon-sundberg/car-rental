@@ -62,7 +62,7 @@ public class BookingProcessor
                        form.Make.Length > 0 ? form.Make : throw new ArgumentException(nameof(form.Make)),
                        form.Odometer > 0 ? form.Odometer : throw new ArgumentException(nameof(form.Odometer)),
                        form.CostKm > 0 ? form.CostKm : throw new ArgumentException(nameof(form.CostKm)),
-                       form.Type,
+                       form.Type ?? throw new ArgumentNullException(nameof(form.Type)),
                        form.CostDay > 0 ? form.CostDay : throw new ArgumentException(nameof(form.CostDay)));
         AddVehicleButtonWasClicked = false;
     }

@@ -7,7 +7,7 @@ public class Vehicle
     public string Make { get; set; } = String.Empty;
     public int Odometer { get; set; }
     public double CostKm { get; set; }
-    public VehicleTypes Type { get; set; } = VehicleTypes.Sedan;
+    public VehicleTypes? Type { get; set; }
     public double CostDay { get; set; }
     public VehicleStatuses Status { get; set; } = VehicleStatuses.Available;
     public Vehicle()
