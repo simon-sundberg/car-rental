@@ -50,7 +50,7 @@
                 <input @bind="bp.vehicleForm.CostDay" type="number" placeholder="Cost / Day" />
             </td>
             <td>
-                <button @onclick="bp.OnAddVehicleSubmit" class="btn btn-sm btn-outline-success">Add</button>
+                <button @onclick="bp.AddVehicle" class="btn btn-sm btn-outline-success">Add</button>
             </td>
             <td>
             </td>
@@ -75,12 +75,12 @@
                                 <option value="@customer.SSN">@customer.LastName @customer.FirstName (@customer.SSN)</option>
                             }
                         </select>
-                        <button disabled="@(String.IsNullOrEmpty(bp.rentingCustomerSSN))" @onclick="(() => bp.OnRentVehicleSubmit(vehicle, bp.rentingCustomerSSN))" class="btn btn-sm btn-outline-primary">Rent</button>
+                        <button disabled="@(String.IsNullOrEmpty(bp.rentingCustomerSSN))" @onclick="(() => bp.RentVehicle(vehicle, bp.rentingCustomerSSN))" class="btn btn-sm btn-outline-primary">Rent</button>
                     }
                     else
                     {
                         <input @bind="bp.returnDistance" style="max-width: 140px;" type="number" placeholder="Distance">
-                        <button disabled="@(bp.returnDistance is null)" @onclick="(() => bp.OnReturnVehicleSubmit(vehicle, bp.returnDistance))" class="btn btn-sm btn-outline-success">Return</button>
+                        <button disabled="@(bp.returnDistance is null)" @onclick="(() => bp.ReturnVehicle(vehicle, bp.returnDistance))" class="btn btn-sm btn-outline-success">Return</button>
                     }
                 </td>
                 <td>
@@ -149,7 +149,7 @@
             </td>
             <td>
                 <input @bind="bp.customerForm.FirstName" type="text" placeholder="First Name" />
-                <button @onclick="bp.OnAddCustomerSubmit" class="btn btn-sm btn-outline-success">Add</button>
+                <button @onclick="bp.AddCustomer" class="btn btn-sm btn-outline-success">Add</button>
             </td>
         </tr>
         @foreach (var customer in bp.GetCustomers())

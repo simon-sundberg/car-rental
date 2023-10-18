@@ -23,7 +23,12 @@ public class BookingProcessor
     public List<String> VehicleFormErrors => vehicleForm.GetErrors();
     public string[] VehicleStatusNames => _db.VehicleStatusNames;
     public string[] VehicleTypeNames => _db.VehicleTypeNames;
-    public void OnReturnVehicleSubmit(Vehicle vehicle, int? kmDistance)
+    public void RentVehicle(Vehicle vehicle, string customerSSN)
+    {
+        IPerson customer = _db.GetCustomer(customerSSN) ?? throw new ArgumentException("Didn't find a customer with the provided SSN.");
+        _db.AddBooking(vehicle, customer);
+    }
+    public void ReturnVehicle(Vehicle vehicle, int? kmDistance)
     {
         if (kmDistance is null)
             throw new ArgumentNullException(nameof(kmDistance));
@@ -32,12 +37,7 @@ public class BookingProcessor
         IBooking booking = _db.GetBooking(vehicle.RegNo) ?? throw new ArgumentException("Didn't find a booking for the provided vehicle regNo.");
         booking.ReturnVehicle((int)kmDistance);
     }
-    public void OnRentVehicleSubmit(Vehicle vehicle, string customerSSN)
-    {
-        IPerson customer = _db.GetCustomer(customerSSN) ?? throw new ArgumentException("Didn't find a customer with the provided SSN.");
-        _db.AddBooking(vehicle, customer);
-    }
-    public void OnAddCustomerSubmit()
+    public void AddCustomer()
     {
         Customer form = customerForm;
         if (customerForm.GetErrors().Count > 0)
@@ -50,7 +50,7 @@ public class BookingProcessor
                         form.FirstName.Length > 0 ? form.FirstName : throw new ArgumentException(nameof(form.FirstName)));
         AddCustomerButtonWasClicked = false;
     }
-    public void OnAddVehicleSubmit()
+    public void AddVehicle()
     {
         Vehicle form = vehicleForm;
         if (vehicleForm.GetErrors().Count > 0)
