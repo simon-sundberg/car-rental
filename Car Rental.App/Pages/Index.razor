@@ -9,18 +9,18 @@
 
 <ErrorList Title="Errors when adding a vehicle" Errors="bp.VehicleFormErrors" ShowIfErrors="bp.AddVehicleButtonWasClicked" />
 
-<table class="vehicles table table-bordered table-hover caption-top w-auto">
-    <caption>Vehicles</caption>
+<table class="vehicles table table-borderless border border-dark table-hover caption-top w-auto">
+    <caption class="fs-4 text-dark">Vehicles</caption>
     <thead>
         <tr>
-            <th>RegNo</th>
-            <th>Make</th>
-            <th>Odometer</th>
-            <th>Cost / Km</th>
-            <th>Type</th>
-            <th>Cost / Day</th>
-            <th>Action</th>
-            <th>Status</th>
+            <th class="bg-dark text-secondary">RegNo</th>
+            <th class="bg-dark text-secondary">Make</th>
+            <th class="bg-dark text-secondary">Odometer</th>
+            <th class="bg-dark text-secondary">Cost / Km</th>
+            <th class="bg-dark text-secondary">Type</th>
+            <th class="bg-dark text-secondary">Cost / Day</th>
+            <th class="bg-dark text-secondary">Action</th>
+            <th class="bg-dark text-secondary">Status</th>
         </tr>
     </thead>
     <tbody>
@@ -99,18 +99,18 @@
     </tbody>
 </table>
 
-<table class="bookings table table-bordered table-hover caption-top w-auto">
-    <caption>Bookings</caption>
+<table class="bookings table table-hover border border-secondary caption-top w-auto">
+    <caption class="fs-4 text-dark">Bookings</caption>
     <thead>
         <tr>
-            <th>Registration Number</th>
-            <th>Customer</th>
-            <th>Km Rented</th>
-            <th>Km Returned</th>
-            <th>Rented</th>
-            <th>Returned</th>
-            <th>Cost</th>
-            <th>Status</th>
+            <th class="bg-dark text-secondary">Registration Number</th>
+            <th class="bg-dark text-secondary">Customer</th>
+            <th class="bg-dark text-secondary">Km Rented</th>
+            <th class="bg-dark text-secondary">Km Returned</th>
+            <th class="bg-dark text-secondary">Rented</th>
+            <th class="bg-dark text-secondary">Returned</th>
+            <th class="bg-dark text-secondary">Cost</th>
+            <th class="bg-dark text-secondary">Status</th>
         </tr>
     </thead>
     @foreach (var booking in bp.GetBookings())
@@ -136,13 +136,13 @@
 
 <ErrorList Title="Errors when adding a customer" Errors="bp.CustomerFormErrors" ShowIfErrors="bp.AddCustomerButtonWasClicked" />
 
-<table class="customers table table-bordered table-hover caption-top w-auto">
-    <caption>Customers</caption>
+<table class="customers table-hover table border border-secondary caption-top w-auto">
+    <caption class="fs-4 text-dark">Customers</caption>
     <thead>
         <tr>
-            <th>SSN</th>
-            <th>Last Name</th>
-            <th>First Name</th>
+            <th class="bg-dark text-secondary">SSN</th>
+            <th class="bg-dark text-secondary">Last Name</th>
+            <th class="bg-dark text-secondary">First Name</th>
         </tr>
     </thead>
     <tbody>
