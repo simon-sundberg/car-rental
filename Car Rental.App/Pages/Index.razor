@@ -26,19 +26,19 @@
     <tbody>
         <tr>
             <td>
-                <input @bind="bp.vehicleForm.RegNo" type="text" placeholder="RegNo" disabled="@bp.Processing" />
+                <input @bind="bp.VehicleForm.RegNo" type="text" placeholder="RegNo" disabled="@bp.Processing" />
             </td>
             <td>
-                <input @bind="bp.vehicleForm.Make" type="text" placeholder="Make" disabled="@bp.Processing" />
+                <input @bind="bp.VehicleForm.Make" type="text" placeholder="Make" disabled="@bp.Processing" />
             </td>
             <td>
-                <input @bind="bp.vehicleForm.Odometer" type="number" placeholder="Odometer" disabled="@bp.Processing" />
+                <input @bind="bp.VehicleForm.Odometer" type="number" placeholder="Odometer" disabled="@bp.Processing" />
             </td>
             <td>
-                <input @bind="bp.vehicleForm.CostKm" type="number" placeholder="Cost / Km" disabled="@bp.Processing" />
+                <input @bind="bp.VehicleForm.CostKm" type="number" placeholder="Cost / Km" disabled="@bp.Processing" />
             </td>
             <td>
-                <select @bind="bp.vehicleForm.Type" disabled="@bp.Processing">
+                <select @bind="bp.VehicleForm.Type" disabled="@bp.Processing">
                     <option selected hidden disabled>Select type</option>
                     @foreach (var type in bp.VehicleTypeNames)
                     {
@@ -47,7 +47,7 @@
                 </select>
             </td>
             <td>
-                <input @bind="bp.vehicleForm.CostDay" type="number" placeholder="Cost / Day" disabled="@bp.Processing" />
+                <input @bind="bp.VehicleForm.CostDay" type="number" placeholder="Cost / Day" disabled="@bp.Processing" />
             </td>
             <td>
                 <button @onclick="bp.AddVehicle" class="btn btn-sm btn-outline-success" disabled="@bp.Processing">Add</button>
@@ -74,19 +74,19 @@
                 <td>
                     @if (vehicle.Status == VehicleStatuses.Available)
                     {
-                        <select @bind="bp.rentingCustomerSSN" aria-label="Renting customer" disabled="@bp.Processing">
+                        <select @bind="bp.RentingCustomerSSN" aria-label="Renting customer" disabled="@bp.Processing">
                             <option selected hidden disabled>Select customer</option>
                             @foreach (var customer in bp.GetCustomers())
                             {
                                 <option value="@customer.SSN">@customer.LastName @customer.FirstName (@customer.SSN)</option>
                             }
                         </select>
-                        <button disabled="@(String.IsNullOrEmpty(bp.rentingCustomerSSN) || bp.Processing)" @onclick="(() => bp.RentVehicle(vehicle, bp.rentingCustomerSSN))" class="btn btn-sm btn-outline-primary">Rent</button>
+                        <button disabled="@(String.IsNullOrEmpty(bp.RentingCustomerSSN) || bp.Processing)" @onclick="(() => bp.RentVehicle(vehicle, bp.RentingCustomerSSN))" class="btn btn-sm btn-outline-primary">Rent</button>
                     }
                     else
                     {
-                        <input @bind="bp.returnDistance" disabled="@bp.Processing" style="max-width: 140px;" type="number" placeholder="Distance">
-                        <button disabled="@(bp.returnDistance is null || bp.Processing)" @onclick="(() => bp.ReturnVehicle(vehicle, bp.returnDistance))" class="btn btn-sm btn-outline-success">Return</button>
+                        <input @bind="bp.ReturnDistance" disabled="@bp.Processing" style="max-width: 140px;" type="number" placeholder="Distance">
+                        <button disabled="@(bp.ReturnDistance is null || bp.Processing)" @onclick="(() => bp.ReturnVehicle(vehicle, bp.ReturnDistance))" class="btn btn-sm btn-outline-success">Return</button>
                     }
                 </td>
                 <td>
@@ -148,13 +148,13 @@
     <tbody>
         <tr>
             <td>
-                <input @bind="bp.customerForm.SSN" type="text" placeholder="SSN" />
+                <input @bind="bp.CustomerForm.SSN" type="text" placeholder="SSN" />
             </td>
             <td>
-                <input @bind="bp.customerForm.LastName" type="text" placeholder="Last Name" />
+                <input @bind="bp.CustomerForm.LastName" type="text" placeholder="Last Name" />
             </td>
             <td>
-                <input @bind="bp.customerForm.FirstName" type="text" placeholder="First Name" />
+                <input @bind="bp.CustomerForm.FirstName" type="text" placeholder="First Name" />
                 <button @onclick="bp.AddCustomer" class="btn btn-sm btn-outline-success">Add</button>
             </td>
         </tr>
