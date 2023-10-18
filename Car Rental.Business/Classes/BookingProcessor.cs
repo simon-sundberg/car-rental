@@ -12,6 +12,7 @@ public class BookingProcessor
     public Vehicle vehicleForm = new();
     public string? rentingCustomerSSN = null;
     public int? returnDistance = null;
+    public bool Processing = false;
     public bool AddCustomerButtonWasClicked { get; private set; }
     public bool AddVehicleButtonWasClicked { get; private set; }
     public BookingProcessor(IData db) => _db = db;
@@ -23,9 +24,12 @@ public class BookingProcessor
     public List<String> VehicleFormErrors => vehicleForm.GetErrors();
     public string[] VehicleStatusNames => _db.VehicleStatusNames;
     public string[] VehicleTypeNames => _db.VehicleTypeNames;
-    public void RentVehicle(Vehicle vehicle, string customerSSN)
+    public async Task RentVehicle(Vehicle vehicle, string customerSSN)
     {
         IPerson customer = _db.GetCustomer(customerSSN) ?? throw new ArgumentException("Didn't find a customer with the provided SSN.");
+        Processing = true;
+        await Task.Delay(10000);
+        Processing = false;
         _db.AddBooking(vehicle, customer);
     }
     public void ReturnVehicle(Vehicle vehicle, int? kmDistance)
