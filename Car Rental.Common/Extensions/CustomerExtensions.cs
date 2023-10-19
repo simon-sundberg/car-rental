@@ -8,8 +8,8 @@ public static class CustomerExtensions
     {
         List<string> errors = new();
         string cleanedSSN = customer.SSN.Replace(" ", "").Replace("-", "");
-        if (cleanedSSN.Length != 12 || !double.TryParse(cleanedSSN, out _))
-            errors.Add("SSN must contain 12 digits");
+        if (cleanedSSN.Length != 5 || !double.TryParse(cleanedSSN, out _))
+            errors.Add("SSN must contain 5 digits");
         if (!(customer.LastName?.Length > 0))
             errors.Add("Last Name is required");
         if (!(customer.FirstName?.Length > 0))

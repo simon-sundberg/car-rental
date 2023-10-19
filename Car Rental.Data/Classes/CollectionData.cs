@@ -20,12 +20,12 @@ public class CollectionData : IData
         AddVehicle("GHI789", "Tesla", 1000, 3, VehicleTypes.Sedan, 100);
         AddVehicle("JKL012", "Jeep", 5000, 1.5, VehicleTypes.Van, 300);
         AddVehicle("MNO234", "Yamaha", 30000, 0.5, VehicleTypes.Motorcycle, 50);
-        AddCustomer("195705031819", "Doe", "John");
-        AddCustomer("199110182663", "Doe", "Jane");
+        AddCustomer("12345", "Doe", "John");
+        AddCustomer("98765", "Doe", "Jane");
         Vehicle ghi789 = GetVehicle("GHI789") ?? throw new NullReferenceException(nameof(ghi789));
         Vehicle jkl012 = GetVehicle("JKL012") ?? throw new NullReferenceException(nameof(jkl012));
-        IPerson john = GetCustomer("195705031819") ?? throw new NullReferenceException(nameof(john));
-        IPerson jane = GetCustomer("199110182663") ?? throw new NullReferenceException(nameof(jane));
+        IPerson john = GetCustomer("12345") ?? throw new NullReferenceException(nameof(john));
+        IPerson jane = GetCustomer("98765") ?? throw new NullReferenceException(nameof(jane));
         AddBooking(ghi789, john);
         AddBooking(jkl012, jane);
         IBooking janesBooking = jkl012.Booking ?? throw new NullReferenceException(nameof(janesBooking));
