@@ -9,26 +9,31 @@ public class Booking : IBooking
     public Vehicle Vehicle { get; init; }
     public IPerson Customer { get; init; }
     public int KmRented { get; init; }
-    public int? KmReturned { get; set; }
+    public int? KmDistance { get; set; }
+    public int? KmReturned { get; private set; }
     public DateOnly DateRented { get; init; }
     public DateOnly? DateReturned { get; set; }
     public double? Cost { get; set; }
-    public Booking(int id, Vehicle vehicle, IPerson customer, int kmRented)
+    public Booking(int id, Vehicle vehicle, IPerson customer)
     {
         Id = id;
         Vehicle = vehicle;
         Customer = customer;
-        KmRented = kmRented;
+        KmRented = Vehicle.Odometer;
         DateRented = DateOnly.FromDateTime(DateTime.Today);
     }
-    public void ReturnVehicle(int kmDistance)
+    public void ReturnVehicle()
     {
+        int kmDistance = KmDistance ?? throw new ArgumentNullException(nameof(KmDistance));
+        if (kmDistance < 0)
+            throw new ArgumentException(nameof(kmDistance));
         DateOnly today = DateOnly.FromDateTime(DateTime.Today);
         int days = today.Duration(DateRented) + 1;
         Cost = days * Vehicle.CostDay + kmDistance * Vehicle.CostKm;
-        KmReturned = KmRented + kmDistance;
         DateReturned = today;
+        KmReturned = KmRented + kmDistance;
         Vehicle.Status = VehicleStatuses.Available;
         Vehicle.Odometer += kmDistance;
+        Vehicle.Booking = null;
     }
 }

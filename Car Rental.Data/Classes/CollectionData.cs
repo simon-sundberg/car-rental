@@ -15,18 +15,22 @@ public class CollectionData : IData
     }
     void SeedData()
     {
-        _vehicles.Add(new Car(NextVehicleId, "ABC123", "Volvo", 10000, 1, VehicleTypes.Combi, 200, VehicleStatuses.Available));
-        _vehicles.Add(new Car(NextVehicleId, "DEF456", "Saab", 20000, 1, VehicleTypes.Sedan, 100, VehicleStatuses.Available));
-        _vehicles.Add(new Car(NextVehicleId, "GHI789", "Tesla", 1000, 3, VehicleTypes.Sedan, 100, VehicleStatuses.Booked));
-        _vehicles.Add(new Car(NextVehicleId, "JKL012", "Jeep", 5000, 1.5, VehicleTypes.Van, 300, VehicleStatuses.Available));
-        _vehicles.Add(new Motorcycle(NextVehicleId, "MNO234", "Yamaha", 30000, 0.5, 50, VehicleStatuses.Available));
-
-        _persons.Add(new Customer(NextPersonId, "195705031819", "Doe", "John"));
-        _persons.Add(new Customer(NextPersonId, "199110182663", "Doe", "Jane"));
-
-        _bookings.Add(new Booking(NextBookingId, _vehicles[2], _persons[0], 1000));
-        _bookings.Add(new Booking(NextBookingId, _vehicles[3], _persons[1], 5000));
-        _bookings[1].ReturnVehicle(0);
+        AddVehicle("ABC123", "Volvo", 10000, 1, VehicleTypes.Combi, 200);
+        AddVehicle("DEF456", "Saab", 20000, 1, VehicleTypes.Sedan, 100);
+        AddVehicle("GHI789", "Tesla", 1000, 3, VehicleTypes.Sedan, 100);
+        AddVehicle("JKL012", "Jeep", 5000, 1.5, VehicleTypes.Van, 300);
+        AddVehicle("MNO234", "Yamaha", 30000, 0.5, VehicleTypes.Motorcycle, 50);
+        AddCustomer("195705031819", "Doe", "John");
+        AddCustomer("199110182663", "Doe", "Jane");
+        Vehicle ghi789 = GetVehicle("GHI789") ?? throw new NullReferenceException(nameof(ghi789));
+        Vehicle jkl012 = GetVehicle("JKL012") ?? throw new NullReferenceException(nameof(jkl012));
+        IPerson john = GetCustomer("195705031819") ?? throw new NullReferenceException(nameof(john));
+        IPerson jane = GetCustomer("199110182663") ?? throw new NullReferenceException(nameof(jane));
+        AddBooking(ghi789, john);
+        AddBooking(jkl012, jane);
+        IBooking janesBooking = jkl012.Booking ?? throw new NullReferenceException(nameof(janesBooking));
+        janesBooking.KmDistance = 0;
+        janesBooking.ReturnVehicle();
     }
     public int NextVehicleId => _vehicles.Count.Equals(0) ? 1 : _vehicles.Max(v => v.Id) + 1;
     public int NextBookingId => _bookings.Count.Equals(0) ? 1 : _bookings.Max(b => b.Id) + 1;
@@ -44,7 +48,9 @@ public class CollectionData : IData
     {
         if (vehicle.Status == VehicleStatuses.Booked)
             return;
-        _bookings.Add(new Booking(NextBookingId, vehicle, customer, vehicle.Odometer));
+        Booking booking = new Booking(NextBookingId, vehicle, customer);
+        _bookings.Add(booking);
+        vehicle.Booking = booking;
         vehicle.Status = VehicleStatuses.Booked;
     }
     public void AddCustomer(string ssn, string lastName, string firstName)

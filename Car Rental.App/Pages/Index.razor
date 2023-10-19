@@ -83,10 +83,10 @@
                         </select>
                         <button disabled="@(String.IsNullOrEmpty(bp.RentingCustomerSSN) || bp.Processing)" @onclick="(() => bp.RentVehicle(vehicle, bp.RentingCustomerSSN))" class="btn btn-sm btn-outline-primary">Rent</button>
                     }
-                    else
+                    else if (vehicle.Booking is not null)
                     {
-                        <input @bind="bp.ReturnDistance" @bind:event="oninput" disabled="@bp.Processing" style="max-width: 140px;" type="number" placeholder="Distance">
-                        <button disabled="@(bp.ReturnDistance is null || bp.Processing)" @onclick="(() => bp.ReturnVehicle(vehicle, bp.ReturnDistance))" class="btn btn-sm btn-outline-success">Return</button>
+                        <input @bind="vehicle.Booking.KmDistance" @bind:event="oninput" disabled="@bp.Processing" style="max-width: 140px;" type="number" placeholder="Distance">
+                        <button disabled="@(vehicle.Booking.KmDistance is null || bp.Processing)" @onclick="(() => bp.ReturnVehicle(vehicle.Booking))" class="btn btn-sm btn-outline-success">Return</button>
                     }
                 </td>
                 <td>

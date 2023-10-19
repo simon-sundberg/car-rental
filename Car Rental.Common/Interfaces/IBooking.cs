@@ -8,9 +8,10 @@ public interface IBooking
     Vehicle Vehicle { get; init; }
     IPerson Customer { get; init; }
     int KmRented { get; init; }
-    int? KmReturned { get; set; }
+    int? KmDistance { get; set; }
+    int? KmReturned { get; }
     DateOnly DateRented { get; init; }
     DateOnly? DateReturned { get; set; }
     double? Cost { get; set; }
-    void ReturnVehicle(int kmDistance);
+    void ReturnVehicle();
 }

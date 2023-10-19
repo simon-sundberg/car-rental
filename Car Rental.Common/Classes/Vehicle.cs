@@ -1,4 +1,6 @@
-﻿namespace Car_Rental.Common.Classes;
+﻿using Car_Rental.Common.Interfaces;
+
+namespace Car_Rental.Common.Classes;
 
 public class Vehicle
 {
@@ -10,6 +12,7 @@ public class Vehicle
     public VehicleTypes? Type { get; set; }
     public double CostDay { get; set; }
     public VehicleStatuses Status { get; set; } = VehicleStatuses.Available;
+    public IBooking? Booking { get; set; }
     public Vehicle()
     {
         Id = -1;
