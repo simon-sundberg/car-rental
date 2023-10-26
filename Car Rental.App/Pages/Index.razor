@@ -2,6 +2,7 @@
 @using Car_Rental.Business.Classes;
 @using Car_Rental.Common.Classes;
 @using Car_Rental.Common.Interfaces;
+@using Car_Rental.Common.Enums;
 @inject BookingProcessor bp;
 
 <PageTitle>Car Rental</PageTitle>
@@ -41,7 +42,7 @@
             <td>
                 <select @bind="bp.VehicleForm.Type" disabled="@bp.Processing">
                     <option selected hidden disabled>Select type</option>
-                    @foreach (var type in bp.VehicleTypeNames)
+                    @foreach (string type in bp.VehicleTypeNames)
                     {
                         <option>@type</option>
                     }
@@ -63,8 +64,9 @@
             </td>
         </tr>
 
-        @foreach (var vehicle in bp.Get<Vehicle>())
+        @foreach (Vehicle vehicle in bp.Get<Vehicle>())
         {
+            IBooking? booking = bp.Single<IBooking>(b => b.Id == vehicle.BookingId);
             <tr>
                 <td class="fw-bold">@vehicle.RegNo</td>
                 <td>@vehicle.Make</td>
@@ -75,20 +77,24 @@
                 <td>
                     @if (vehicle.Status == VehicleStatuses.Available)
                     {
-                        <select @bind="bp.RentingCustomerSSN" aria-label="Renting customer" disabled="@bp.Processing">
+                        <select @bind="bp.RentingCustomerId" aria-label="Renting customer" disabled="@bp.Processing">
                             <option selected hidden disabled>Select customer</option>
-                            @foreach (var customer in bp.Get<IPerson>())
+                            @foreach (IPerson customer in bp.Get<IPerson>())
                             {
-                                <option value="@customer.SSN">@customer.LastName @customer.FirstName (@customer.SSN)</option>
+                                <option value="@customer.Id">@customer.LastName @customer.FirstName (@customer.SSN)</option>
                             }
                         </select>
-                        <button disabled="@(String.IsNullOrEmpty(bp.RentingCustomerSSN) || bp.Processing)" @onclick="(() => bp.RentVehicle(vehicle, bp.RentingCustomerSSN))" class="btn btn-sm btn-outline-primary">Rent</button>
+                        <button 
+                            disabled="@(bp.RentingCustomerId is null || bp.Processing)" 
+                            @onclick="(() => bp.RentVehicle(vehicle.Id, bp.RentingCustomerId ?? throw new ArgumentNullException(nameof(bp.RentingCustomerId))))" 
+                            class="btn btn-sm btn-outline-primary">Rent
+                        </button>
                     }
-                    else if (vehicle.Booking is not null)
+                    else if (booking is not null)
                     {
-                        <input @bind="vehicle.Booking.KmDistance" @bind:event="oninput" disabled="@bp.Processing" style="max-width: 140px;" type="number" placeholder="Distance">
-                        <button disabled="@(vehicle.Booking.KmDistance is null || bp.Processing)" @onclick="(() => bp.ReturnVehicle(vehicle.Booking))" class="btn btn-sm btn-outline-success">Return</button>
-                    }
+                        <input @bind="booking.KmDistance" @bind:event="oninput" disabled="@bp.Processing" style="max-width: 140px;" type="number" placeholder="Distance">
+                        <button disabled="@(booking.KmDistance is null || bp.Processing)" @onclick="(() => bp.ReturnVehicle(vehicle.Id))" class="btn btn-sm btn-outline-success">Return</button>
+                    } 
                 </td>
                 <td>
                     <span class="badge @(vehicle.Status == VehicleStatuses.Available ? "text-bg-dark" : "text-bg-danger")">
@@ -114,12 +120,14 @@
             <th class="bg-dark text-secondary">Status</th>
         </tr>
     </thead>
-    @foreach (var booking in bp.Get<IBooking>())
+     @foreach (IBooking booking in bp.Get<IBooking>())
     {
+        Vehicle? vehicle = bp.Single<Vehicle>(v => v.Id == booking.VehicleId);
+        IPerson? customer = bp.Single<IPerson>(c => c.Id == booking.CustomerId);
         <tbody>
             <tr>
-                <td class="fw-bold">@booking.Vehicle.RegNo</td>
-                <td>@booking.Customer.LastName @booking.Customer.FirstName (@booking.Customer.SSN)</td>
+                <td class="fw-bold">@vehicle?.RegNo</td>
+                <td>@customer?.LastName @customer?.FirstName (@customer?.SSN)</td>
                 <td>@booking.KmRented</td>
                 <td>@booking.KmReturned</td>
                 <td>@booking.DateRented.ToString()</td>
@@ -132,7 +140,7 @@
                 </td>
             </tr>
         </tbody>
-    }
+    } 
 </table>
 
 <ErrorList Title="Errors when adding a customer" Errors="bp.CustomerFormErrors" ShowIfErrors="bp.AddCustomerButtonWasClicked" />
@@ -159,7 +167,7 @@
                 <button @onclick="bp.AddCustomer" class="btn btn-sm btn-outline-success">Add</button>
             </td>
         </tr>
-        @foreach (var customer in bp.Get<IPerson>())
+        @foreach (IPerson customer in bp.Get<IPerson>())
         {
             <tr>
                 <td class="fw-bold">@customer.SSN</td>

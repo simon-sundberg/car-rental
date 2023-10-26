@@ -1,4 +1,5 @@
-﻿using Car_Rental.Common.Interfaces;
+﻿using Car_Rental.Common.Enums;
+using Car_Rental.Common.Interfaces;
 
 namespace Car_Rental.Common.Classes;
 
@@ -12,20 +13,8 @@ public class Vehicle
     public VehicleTypes? Type { get; set; }
     public double CostDay { get; set; }
     public VehicleStatuses Status { get; set; } = VehicleStatuses.Available;
-    public IBooking? Booking { get; set; }
-    public Vehicle()
-    {
-        Id = -1;
-    }
-    public Vehicle(int id, string regNo, string make, int odometer, double costKm, VehicleTypes type, double costDay, VehicleStatuses status)
-    {
-        Id = id;
-        RegNo = regNo;
-        Make = make;
-        Odometer = odometer;
-        CostKm = costKm;
-        CostDay = costDay;
-        Status = status;
-        Type = type;
-    }
+    public int? BookingId { get; set; }
+    public Vehicle() => Id = -1;
+    public Vehicle(int id, string regNo, string make, int odometer, double costKm, VehicleTypes? type, double costDay)
+        => (Id, RegNo, Make, Odometer, CostKm, CostDay, Type) = (id, regNo, make, odometer, costKm, costDay, type);
 }

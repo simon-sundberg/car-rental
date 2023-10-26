@@ -1,21 +1,15 @@
-﻿using System.Linq.Expressions;
+﻿using Car_Rental.Common.Classes;
+using Car_Rental.Common.Enums;
+using Car_Rental.Common.Interfaces;
+using System.Linq.Expressions;
 
 namespace Car_Rental.Data.Interfaces;
 public interface IData
 {
-    /*
-        Vehicle? GetVehicle(string regNo);
-        List<Vehicle> GetVehicles();
-        List<Vehicle> GetVehicles(VehicleStatuses status);
-        IPerson? GetCustomer(string ssn);
-        List<IPerson> GetCustomers();
-        IBooking? GetBooking(string regNo);
-        List<IBooking> GetBookings();
-        void AddBooking(Vehicle vehicle, IPerson customer);
-        void AddCustomer(string ssn, string lastName, string firstName);
-        void AddVehicle(string regNo, string make, int odometer, double costKm, VehicleTypes type, double costDay);
-    */
-
+    void AddCustomer(IPerson form);
+    void AddVehicle(Vehicle form);
+    void RentVehicle(int vehicleId, int customerId);
+    void ReturnVehicle(int vehicleId);
     T? Single<T>(Expression<Func<T, bool>> expression) where T : class;
     IEnumerable<T> Get<T>(Expression<Func<T, bool>>? expression = null) where T : class;
     void Add<T>(T item) where T : class;
