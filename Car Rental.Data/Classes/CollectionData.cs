@@ -1,12 +1,12 @@
 ﻿using Car_Rental.Common.Classes;
 using Car_Rental.Common.Enums;
 using Car_Rental.Common.Error;
-using static Car_Rental.Common.Error.ErrorTypes;
 using Car_Rental.Common.Extensions;
 using Car_Rental.Common.Interfaces;
 using Car_Rental.Data.Interfaces;
 using System.Linq.Expressions;
 using System.Reflection;
+using static Car_Rental.Common.Error.ErrorTypes;
 
 namespace Car_Rental.Data.Classes;
 
@@ -88,10 +88,10 @@ public class CollectionData : IData
         _et.InactivateError(VEHICLE_ALREADY_BOOKED);
         IPerson customer =
             Single<IPerson>(c => c.Id == customerId)
-            ?? throw new InvalidOperationException("Customer not found for the given customerId.");
+            ?? throw new InvalidOperationException("Customer not found for the given customerId");
         Vehicle vehicle =
             Single<Vehicle>(v => v.Id == vehicleId)
-            ?? throw new InvalidOperationException("Vehicle not found for the given vehicleId.");
+            ?? throw new InvalidOperationException("Vehicle not found for the given vehicleId");
         if (vehicle.Status == VehicleStatuses.Booked)
         {
             _et.ActivateError(VEHICLE_ALREADY_BOOKED);
@@ -106,15 +106,20 @@ public class CollectionData : IData
     public void ReturnVehicle(int vehicleId)
     {
         _et.InactivateError(VEHICLE_RENTING_DISTANCE_NULL_OR_NEGATIVE);
-        Vehicle vehicle =
-            Single<Vehicle>(v => v.Id == vehicleId)
-            ?? throw new InvalidOperationException("Vehicle not found for the given vehicleId.");
-        IBooking booking =
-            Single<IBooking>(b => b.Id == vehicle.BookingId)
-            ?? throw new InvalidOperationException("Booking not found for the given vehicleId.");
+
         try
         {
+            Vehicle vehicle =
+    Single<Vehicle>(v => v.Id == vehicleId)
+    ?? throw new InvalidOperationException("Vehicle not found for the given vehicleId.");
+            IBooking booking =
+                Single<IBooking>(b => b.Id == vehicle.BookingId)
+                ?? throw new InvalidOperationException("Booking not found for the given vehicleId.");
             booking.ReturnVehicle(vehicle);
+        }
+        catch (InvalidOperationException)
+        {
+            //_et.ActivateError
         }
         catch (InvalidDataException)
         {

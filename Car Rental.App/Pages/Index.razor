@@ -15,7 +15,7 @@
             e.Active
             && e.Source is ErrorSources.AddVehicle
             or ErrorSources.AddVehicleForm
-            or ErrorSources.RentVehicle 
+            or ErrorSources.RentVehicle
             or ErrorSources.ReturnVehicle)" />
 
 <table class="vehicles table table-borderless border border-dark table-hover caption-top w-auto">
@@ -92,7 +92,13 @@
                             }
                         </select>
                         <button disabled="@(bp.RentingCustomerId is null || bp.Processing)"
-                        @onclick="(() => bp.RentVehicle(vehicle.Id, bp.RentingCustomerId ?? throw new ArgumentNullException(nameof(bp.RentingCustomerId))))"
+                        @onclick="(async() => {
+                                if (bp.RentingCustomerId is null) {
+                                    et.ActivateError(ErrorTypes.VEHICLE_RENTING_CUSTOMER_ID_NULL);
+                                    return;
+                                }
+                                await bp.RentVehicle(vehicle.Id, (int)bp.RentingCustomerId);
+                        })"
                                 class="btn btn-sm btn-outline-primary">
                             Rent
                         </button>
@@ -150,7 +156,7 @@
     }
 </table>
 
-<ErrorList Errors="et.GetErrors(e => 
+<ErrorList Errors="et.GetErrors(e =>
             e.Active
             && e.Source is ErrorSources.AddCustomer or ErrorSources.AddCustomerForm)" />
 

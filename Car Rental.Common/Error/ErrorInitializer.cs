@@ -1,22 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Car_Rental.Common.Error;
+﻿namespace Car_Rental.Common.Error;
 
 public static class ErrorInitializer
 {
     public static void AddErrors(ErrorTracker eh)
     {
         List<Error> errors = new();
-        errors.AddRange(DataErrors);
+        errors.AddRange(CustomerErrors);
         errors.AddRange(CustomerFormErrors);
+        errors.AddRange(VehicleErrors);
         errors.AddRange(VehicleFormErrors);
         foreach (Error error in errors)
             eh.AddError(error);
     }
+
+    static List<Error> CustomerErrors =>
+        new()
+        {
+            new Error(
+                ErrorProjects.Data,
+                ErrorSources.AddCustomer,
+                ErrorTypes.CUSTOMER_DUPLICATE_SSN,
+                "A customer with the given SSN already exists"
+            ),
+        };
 
     static List<Error> CustomerFormErrors =>
         new()
@@ -38,6 +44,35 @@ public static class ErrorInitializer
                 ErrorSources.AddCustomerForm,
                 ErrorTypes.CUSTOMER_FIRST_NAME_EMPTY,
                 "First Name is required"
+            ),
+        };
+
+    static List<Error> VehicleErrors =>
+        new()
+        {
+            new Error(
+                ErrorProjects.Data,
+                ErrorSources.AddVehicle,
+                ErrorTypes.VEHICLE_DUPLICATE_REGNO,
+                "A vehicle with the given RegNo already exists"
+            ),
+            new Error(
+                ErrorProjects.Data,
+                ErrorSources.RentVehicle,
+                ErrorTypes.VEHICLE_ALREADY_BOOKED,
+                "Vehicle is already booked"
+            ),
+            new Error(
+                ErrorProjects.Data,
+                ErrorSources.ReturnVehicle,
+                ErrorTypes.VEHICLE_RENTING_DISTANCE_NULL_OR_NEGATIVE,
+                "Distance must be a non-negative number"
+            ),
+            new Error(
+                ErrorProjects.Data,
+                ErrorSources.RentVehicle,
+                ErrorTypes.VEHICLE_RENTING_CUSTOMER_ID_NULL,
+                "Renting customer is required"
             ),
         };
 
@@ -80,34 +115,5 @@ public static class ErrorInitializer
                 ErrorTypes.VEHICLE_COSTDAY_NOT_POSITIVE,
                 "Cost / Day must be a positive number"
             ),
-        };
-
-    static List<Error> DataErrors =>
-        new()
-        {
-            new Error(
-                ErrorProjects.Data,
-                ErrorSources.AddVehicle,
-                ErrorTypes.VEHICLE_DUPLICATE_REGNO,
-                "A vehicle with the given RegNo already exists"
-            ),
-            new Error(
-                ErrorProjects.Data,
-                ErrorSources.AddCustomer,
-                ErrorTypes.CUSTOMER_DUPLICATE_SSN,
-                "A customer with the given SSN already exists"
-            ),
-            new Error(
-                ErrorProjects.Data,
-                ErrorSources.RentVehicle,
-                ErrorTypes.VEHICLE_ALREADY_BOOKED,
-                "Vehicle is already booked"
-            ),
-            new Error(
-                ErrorProjects.Data,
-                ErrorSources.ReturnVehicle,
-                ErrorTypes.VEHICLE_RENTING_DISTANCE_NULL_OR_NEGATIVE,
-                "Distance must be a non-negative number"
-            )
         };
 }
