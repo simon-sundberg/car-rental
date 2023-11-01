@@ -42,6 +42,7 @@ public class CollectionData : IData
     public void AddVehicle(Vehicle form)
     {
         _et.InactivateError(VEHICLE_DUPLICATE_REGNO);
+        form.CheckErrors(_et);
         List<Error> errors = _et.GetErrors(
             e => e.Active && e.Source == ErrorSources.AddVehicleForm
         );
@@ -68,6 +69,7 @@ public class CollectionData : IData
     public void AddCustomer(IPerson form)
     {
         _et.InactivateError(CUSTOMER_DUPLICATE_SSN);
+        form.CheckErrors(_et);
         List<Error> errors = _et.GetErrors(
             e => e.Active && e.Source == ErrorSources.AddCustomerForm
         );

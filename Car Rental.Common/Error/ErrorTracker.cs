@@ -22,4 +22,7 @@ public class ErrorTracker
 
     public void InactivateError(ErrorTypes type) =>
         _errors.Single(e => e.Type == type).Active = false;
+
+    public void InactivateErrors(ErrorSources source) =>
+        _errors.FindAll(e => e.Source == source).ForEach(e => e.Active = false);
 }

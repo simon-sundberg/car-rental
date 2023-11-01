@@ -11,7 +11,7 @@
 
 <h1>Car Rental</h1>
 
-<ErrorList Title="All errors" Errors="eh.GetErrors(e => true)" DisplayCondition="true" />
+<ErrorList Title="All errors" Errors="eh.GetErrors(e => e.Active == true)" DisplayCondition="true" />
 
 @* <ErrorList Title="Vehicle form errors" Errors="bp.VehicleFormErrors" DisplayCondition="bp.DisplayVehicleFormErrors" /> *@
 

@@ -10,8 +10,13 @@ namespace Car_Rental.Business.Classes;
 public class BookingProcessor
 {
     readonly IData _db;
+    readonly ErrorTracker _et;
 
-    public BookingProcessor(IData db) => _db = db;
+    public BookingProcessor(IData db, ErrorTracker et)
+    {
+        _db = db;
+        _et = et;
+    }
 
     public Customer CustomerForm = new();
     public Vehicle VehicleForm = new();
@@ -24,9 +29,9 @@ public class BookingProcessor
 
     //public void DetermineErrorDisplay()
     //{
-        //DisplayCustomerDatabaseErrors = DatabaseErrors.Count > 0;
-        //DisplayCustomerFormErrors = CustomerFormErrors.Count > 0;
-        //DisplayVehicleErrors = VehicleFormErrors.Count > 0 || DatabaseErrors.Count > 0;
+    //DisplayCustomerDatabaseErrors = DatabaseErrors.Count > 0;
+    //DisplayCustomerFormErrors = CustomerFormErrors.Count > 0;
+    //DisplayVehicleErrors = VehicleFormErrors.Count > 0 || DatabaseErrors.Count > 0;
     //}
 
     //public List<string> CustomerFormErrors => CustomerForm.GetErrors();
@@ -43,16 +48,22 @@ public class BookingProcessor
 
     public void AddCustomer()
     {
-        //if (CustomerFormErrors.Count == 0)
-            //_db.AddCustomer(CustomerForm);
-        //DetermineDisplayCustomerErrors();
+        CustomerForm.CheckErrors(_et);
+        List<Error> errors = _et.GetErrors(
+            e => e.Active && e.Source == ErrorSources.AddCustomerForm
+        );
+        if (errors.Count == 0)
+            _db.AddCustomer(CustomerForm);
     }
 
     public void AddVehicle()
     {
-        //if (VehicleFormErrors.Count == 0)
-            //_db.AddVehicle(VehicleForm);
-        //DetermineDisplayVehicleErrors();
+        VehicleForm.CheckErrors(_et);
+        List<Error> errors = _et.GetErrors(
+            e => e.Active && e.Source == ErrorSources.AddVehicleForm
+        );
+        if (errors.Count == 0)
+            _db.AddVehicle(VehicleForm);
     }
 
     public async Task RentVehicle(int vehicleId, int customerId)
@@ -61,12 +72,10 @@ public class BookingProcessor
         await Task.Delay(2000);
         Processing = false;
         _db.RentVehicle(vehicleId, customerId);
-        //DetermineDisplayVehicleErrors();
     }
 
     public void ReturnVehicle(int vehicleId)
     {
         _db.ReturnVehicle(vehicleId);
-        //DetermineDisplayVehicleErrors();
     }
 }

@@ -8,6 +8,7 @@ public static class CustomerExtensions
 {
     public static void CheckErrors(this IPerson customer, ErrorTracker eh)
     {
+        eh.InactivateErrors(ErrorSources.AddCustomerForm);
         string cleanedSSN = customer.SSN.Replace(" ", "").Replace("-", "");
         if (cleanedSSN.Length != 5 || !double.TryParse(cleanedSSN, out _))
             eh.ActivateError(CUSTOMER_SSN_NOT_5_DIGITS);

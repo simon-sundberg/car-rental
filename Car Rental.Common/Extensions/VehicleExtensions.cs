@@ -11,6 +11,7 @@ public static class VehicleExtensions
 
     public static void CheckErrors(this Vehicle vehicle, ErrorTracker eh)
     {
+        eh.InactivateErrors(ErrorSources.AddVehicleForm);
         if (vehicle.RegNo.Length != 6)
             eh.ActivateError(VEHICLE_REGNO_WRONG_LENGTH);
         if (vehicle.Make.Length == 0)
