@@ -14,7 +14,25 @@ public class Vehicle
     public double CostDay { get; set; }
     public VehicleStatuses Status { get; set; } = VehicleStatuses.Available;
     public int? BookingId { get; set; }
+
     public Vehicle() => Id = -1;
-    public Vehicle(int id, string regNo, string make, int odometer, double costKm, VehicleTypes? type, double costDay)
-        => (Id, RegNo, Make, Odometer, CostKm, CostDay, Type) = (id, regNo, make, odometer, costKm, costDay, type);
+
+    public Vehicle(
+        int id,
+        string regNo,
+        string make,
+        int odometer,
+        double costKm,
+        VehicleTypes? type,
+        double costDay
+    ) =>
+        (Id, RegNo, Make, Odometer, CostKm, CostDay, Type) = (
+            id,
+            regNo,
+            make,
+            odometer,
+            costKm,
+            costDay,
+            type
+        );
 }

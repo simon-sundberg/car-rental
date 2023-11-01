@@ -15,6 +15,7 @@ public class Booking : IBooking
     public int? KmReturned { get; private set; }
     public DateOnly? DateReturned { get; private set; }
     public double? Cost { get; private set; }
+
     public Booking(int id, int vehicleId, int customerId, int kmRented)
     {
         Id = id;
@@ -23,11 +24,13 @@ public class Booking : IBooking
         KmRented = kmRented;
         DateRented = DateOnly.FromDateTime(DateTime.Today);
     }
+
     public void ReturnVehicle(Vehicle vehicle)
     {
-        int kmDistance = KmDistance ?? throw new InvalidOperationException("Distance input value was null when returning vehicle.");
-        if (kmDistance < 0)
-            throw new InvalidOperationException("Distance input value was negative when returning vehicle.");
+        if (KmDistance is null || KmDistance < 0)
+            throw new InvalidDataException("Distance input value is null or negative.");
+
+        int kmDistance = (int)KmDistance;
         DateOnly date = DateOnly.FromDateTime(DateTime.Today);
         int days = date.Duration(DateRented) + 1;
         Cost = days * vehicle.CostDay + kmDistance * vehicle.CostKm;

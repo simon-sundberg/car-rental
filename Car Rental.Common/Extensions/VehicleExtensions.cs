@@ -1,26 +1,27 @@
 ﻿using Car_Rental.Common.Classes;
+using Car_Rental.Common.Error;
+using static Car_Rental.Common.Error.ErrorTypes;
 
 namespace Car_Rental.Common.Extensions;
 
 public static class VehicleExtensions
 {
-    public static int Duration(this DateOnly startDate, DateOnly endDate)
-        => endDate.DayNumber - startDate.DayNumber;
-    public static List<string> GetErrors(this Vehicle vehicle)
+    public static int Duration(this DateOnly startDate, DateOnly endDate) =>
+        endDate.DayNumber - startDate.DayNumber;
+
+    public static void CheckErrors(this Vehicle vehicle, ErrorTracker eh)
     {
-        List<string> errors = new();
         if (vehicle.RegNo.Length != 6)
-            errors.Add("RegNo must be 6 characters long");
+            eh.ActivateError(VEHICLE_REGNO_WRONG_LENGTH);
         if (vehicle.Make.Length == 0)
-            errors.Add("Make is required");
+            eh.ActivateError(VEHICLE_MAKE_EMPTY);
         if (vehicle.Odometer <= 0)
-            errors.Add("Odometer must be a positive number");
+            eh.ActivateError(VEHICLE_ODOMETER_NOT_POSITIVE);
         if (vehicle.CostKm <= 0)
-            errors.Add("Cost / Km must be a positive number");
+            eh.ActivateError(VEHICLE_COSTKM_NOT_POSITIVE);
         if (vehicle.Type is null)
-            errors.Add("Type is required");
+            eh.ActivateError(VEHICLE_TYPE_NULL);
         if (vehicle.CostDay <= 0)
-            errors.Add("Cost / Day must be a positive number");
-        return errors;
+            eh.ActivateError(VEHICLE_COSTDAY_NOT_POSITIVE);
     }
 }

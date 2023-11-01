@@ -1,13 +1,18 @@
-﻿@if (Errors.Count > 0 && ShowIfErrors)
+﻿@using Car_Rental.Common.Classes;
+@using Car_Rental.Common.Error;
+
+@if (Errors.Count > 0 && DisplayCondition)
 {
-    <div class="alert alert-danger d-inline-block" role="alert">
-        <h3 class="mb-4">@Title</h3>
-        <ul>
-            @foreach (string error in Errors)
-            {
-                <li>@error</li>
-            }
-        </ul>
+    <div>
+        <div class="alert alert-danger d-inline-block" role="alert">
+            <h3 class="mb-4">@Title</h3>
+            <ul>
+                @foreach (Error error in Errors)
+                {
+                    <li>@error.Source --- @error.Message</li>
+                }
+            </ul>
+        </div>
     </div>
 }
 
@@ -16,8 +21,8 @@
     public string? Title { get; set; }
 
     [Parameter]
-    public List<String> Errors { get; set; } = new();
+    public List<Error> Errors { get; set; } = new();
 
     [Parameter]
-    public bool ShowIfErrors { get; set; }
+    public bool DisplayCondition { get; set; } = true;
 }

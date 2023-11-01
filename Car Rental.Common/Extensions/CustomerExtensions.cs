@@ -1,19 +1,19 @@
-﻿using Car_Rental.Common.Interfaces;
+﻿using Car_Rental.Common.Error;
+using Car_Rental.Common.Interfaces;
+using static Car_Rental.Common.Error.ErrorTypes;
 
 namespace Car_Rental.Common.Extensions;
 
 public static class CustomerExtensions
 {
-    public static List<string> GetErrors(this IPerson customer)
+    public static void CheckErrors(this IPerson customer, ErrorTracker eh)
     {
-        List<string> errors = new();
         string cleanedSSN = customer.SSN.Replace(" ", "").Replace("-", "");
         if (cleanedSSN.Length != 5 || !double.TryParse(cleanedSSN, out _))
-            errors.Add("SSN must contain 5 digits");
+            eh.ActivateError(CUSTOMER_SSN_NOT_5_DIGITS);
         if (!(customer.LastName?.Length > 0))
-            errors.Add("Last Name is required");
+            eh.ActivateError(CUSTOMER_LAST_NAME_EMPTY);
         if (!(customer.FirstName?.Length > 0))
-            errors.Add("First Name is required");
-        return errors;
+            eh.ActivateError(CUSTOMER_FIRST_NAME_EMPTY);
     }
 }

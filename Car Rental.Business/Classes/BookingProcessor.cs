@@ -1,52 +1,72 @@
 ﻿using Car_Rental.Common.Classes;
+using Car_Rental.Common.Error;
 using Car_Rental.Common.Extensions;
 using Car_Rental.Common.Interfaces;
 using Car_Rental.Data.Interfaces;
 using System.Linq.Expressions;
 
 namespace Car_Rental.Business.Classes;
+
 public class BookingProcessor
 {
     readonly IData _db;
+
     public BookingProcessor(IData db) => _db = db;
+
     public Customer CustomerForm = new();
     public Vehicle VehicleForm = new();
     public int? RentingCustomerId;
     public bool Processing;
-    public bool AddCustomerButtonWasClicked { get; private set; }
-    public bool AddVehicleButtonWasClicked { get; private set; }
-    public List<String> CustomerFormErrors => CustomerForm.GetErrors();
-    public List<String> VehicleFormErrors => VehicleForm.GetErrors();
+    public bool DisplayCustomerDatabaseErrors { get; private set; }
+    public bool DisplayCustomerFormErrors { get; private set; }
+    public bool DisplayVehicleDatabaseErrors { get; private set; }
+    public bool DisplayVehicleFormErrors { get; private set; }
+
+    //public void DetermineErrorDisplay()
+    //{
+        //DisplayCustomerDatabaseErrors = DatabaseErrors.Count > 0;
+        //DisplayCustomerFormErrors = CustomerFormErrors.Count > 0;
+        //DisplayVehicleErrors = VehicleFormErrors.Count > 0 || DatabaseErrors.Count > 0;
+    //}
+
+    //public List<string> CustomerFormErrors => CustomerForm.GetErrors();
+    //public List<string> VehicleFormErrors => VehicleForm.GetErrors();
+    //public ErrorTracker DatabaseErrors => _db.Errors;
     public string[] VehicleStatusNames => _db.VehicleStatusNames;
     public string[] VehicleTypeNames => _db.VehicleTypeNames;
-    public T? Single<T>(Expression<Func<T, bool>> expression) where T : class => _db.Single(expression);
-    public IEnumerable<T> Get<T>(Expression<Func<T, bool>>? expression = null) where T : class => _db.Get(expression);
+
+    public T? Single<T>(Expression<Func<T, bool>> expression)
+        where T : class => _db.Single(expression);
+
+    public IEnumerable<T> Get<T>(Expression<Func<T, bool>>? expression = null)
+        where T : class => _db.Get(expression);
+
     public void AddCustomer()
     {
-        if (CustomerForm.GetErrors().Count > 0)
-        {
-            AddCustomerButtonWasClicked = true;
-            return;
-        }
-        _db.AddCustomer(CustomerForm);
-        AddCustomerButtonWasClicked = false;
+        //if (CustomerFormErrors.Count == 0)
+            //_db.AddCustomer(CustomerForm);
+        //DetermineDisplayCustomerErrors();
     }
+
     public void AddVehicle()
     {
-        if (VehicleForm.GetErrors().Count > 0)
-        {
-            AddVehicleButtonWasClicked = true;
-            return;
-        }
-        _db.AddVehicle(VehicleForm);
-        AddVehicleButtonWasClicked = false;
+        //if (VehicleFormErrors.Count == 0)
+            //_db.AddVehicle(VehicleForm);
+        //DetermineDisplayVehicleErrors();
     }
+
     public async Task RentVehicle(int vehicleId, int customerId)
     {
         Processing = true;
         await Task.Delay(2000);
         Processing = false;
         _db.RentVehicle(vehicleId, customerId);
+        //DetermineDisplayVehicleErrors();
     }
-    public void ReturnVehicle(int vehicleId) => _db.ReturnVehicle(vehicleId);
+
+    public void ReturnVehicle(int vehicleId)
+    {
+        _db.ReturnVehicle(vehicleId);
+        //DetermineDisplayVehicleErrors();
+    }
 }

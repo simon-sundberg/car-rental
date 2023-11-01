@@ -1,15 +1,19 @@
 ﻿@page "/"
 @using Car_Rental.Business.Classes;
 @using Car_Rental.Common.Classes;
+@using Car_Rental.Common.Error;
 @using Car_Rental.Common.Interfaces;
 @using Car_Rental.Common.Enums;
 @inject BookingProcessor bp;
+@inject ErrorTracker eh;
 
 <PageTitle>Car Rental</PageTitle>
 
 <h1>Car Rental</h1>
 
-<ErrorList Title="Errors when adding a vehicle" Errors="bp.VehicleFormErrors" ShowIfErrors="bp.AddVehicleButtonWasClicked" />
+<ErrorList Title="All errors" Errors="eh.GetErrors(e => true)" DisplayCondition="true" />
+
+@* <ErrorList Title="Vehicle form errors" Errors="bp.VehicleFormErrors" DisplayCondition="bp.DisplayVehicleFormErrors" /> *@
 
 <table class="vehicles table table-borderless border border-dark table-hover caption-top w-auto">
     <caption class="fs-4 text-dark">Vehicles</caption>
@@ -84,17 +88,17 @@
                                 <option value="@customer.Id">@customer.LastName @customer.FirstName (@customer.SSN)</option>
                             }
                         </select>
-                        <button 
-                            disabled="@(bp.RentingCustomerId is null || bp.Processing)" 
-                            @onclick="(() => bp.RentVehicle(vehicle.Id, bp.RentingCustomerId ?? throw new ArgumentNullException(nameof(bp.RentingCustomerId))))" 
-                            class="btn btn-sm btn-outline-primary">Rent
+                        <button disabled="@(bp.RentingCustomerId is null || bp.Processing)"
+                        @onclick="(() => bp.RentVehicle(vehicle.Id, bp.RentingCustomerId ?? throw new ArgumentNullException(nameof(bp.RentingCustomerId))))"
+                                class="btn btn-sm btn-outline-primary">
+                            Rent
                         </button>
                     }
                     else if (booking is not null)
                     {
                         <input @bind="booking.KmDistance" @bind:event="oninput" disabled="@bp.Processing" style="max-width: 140px;" type="number" placeholder="Distance">
                         <button disabled="@(booking.KmDistance is null || bp.Processing)" @onclick="(() => bp.ReturnVehicle(vehicle.Id))" class="btn btn-sm btn-outline-success">Return</button>
-                    } 
+                    }
                 </td>
                 <td>
                     <span class="badge @(vehicle.Status == VehicleStatuses.Available ? "text-bg-dark" : "text-bg-danger")">
@@ -120,7 +124,7 @@
             <th class="bg-dark text-secondary">Status</th>
         </tr>
     </thead>
-     @foreach (IBooking booking in bp.Get<IBooking>())
+    @foreach (IBooking booking in bp.Get<IBooking>())
     {
         Vehicle? vehicle = bp.Single<Vehicle>(v => v.Id == booking.VehicleId);
         IPerson? customer = bp.Single<IPerson>(c => c.Id == booking.CustomerId);
@@ -140,10 +144,12 @@
                 </td>
             </tr>
         </tbody>
-    } 
+    }
 </table>
 
-<ErrorList Title="Errors when adding a customer" Errors="bp.CustomerFormErrors" ShowIfErrors="bp.AddCustomerButtonWasClicked" />
+@* <ErrorList Title="Database errors" Errors="bp.DatabaseErrors" DisplayCondition="bp.DisplayCustomerErrors" /> *@
+
+@* <ErrorList Title="Customer form errors" Errors="bp.CustomerFormErrors" DisplayCondition="bp.DisplayCustomerErrors" /> *@
 
 <table class="customers table-hover table border border-secondary caption-top w-auto">
     <caption class="fs-4 text-dark">Customers</caption>

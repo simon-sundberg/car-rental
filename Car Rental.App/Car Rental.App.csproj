@@ -15,4 +15,12 @@
     <ProjectReference Include="..\Car Rental.Business\Car Rental.Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\Simon\source\repos\simon-sundberg\car-rental\Car Rental.App\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\Simon\source\repos\simon-sundberg\car-rental\Car Rental.App\.editorconfig" />
+  </ItemGroup>
+
 </Project>
