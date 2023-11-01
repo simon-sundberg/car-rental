@@ -9,7 +9,7 @@
             <ul>
                 @foreach (Error error in Errors)
                 {
-                    <li>@error.Source --- @error.Message</li>
+                    <li>@error.Message</li>
                 }
             </ul>
         </div>
@@ -18,7 +18,7 @@
 
 @code {
     [Parameter]
-    public string? Title { get; set; }
+    public string Title { get; set; } = "Errors";
 
     [Parameter]
     public List<Error> Errors { get; set; } = new();

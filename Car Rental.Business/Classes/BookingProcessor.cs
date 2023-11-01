@@ -1,7 +1,6 @@
 ﻿using Car_Rental.Common.Classes;
 using Car_Rental.Common.Error;
 using Car_Rental.Common.Extensions;
-using Car_Rental.Common.Interfaces;
 using Car_Rental.Data.Interfaces;
 using System.Linq.Expressions;
 
@@ -22,21 +21,6 @@ public class BookingProcessor
     public Vehicle VehicleForm = new();
     public int? RentingCustomerId;
     public bool Processing;
-    public bool DisplayCustomerDatabaseErrors { get; private set; }
-    public bool DisplayCustomerFormErrors { get; private set; }
-    public bool DisplayVehicleDatabaseErrors { get; private set; }
-    public bool DisplayVehicleFormErrors { get; private set; }
-
-    //public void DetermineErrorDisplay()
-    //{
-    //DisplayCustomerDatabaseErrors = DatabaseErrors.Count > 0;
-    //DisplayCustomerFormErrors = CustomerFormErrors.Count > 0;
-    //DisplayVehicleErrors = VehicleFormErrors.Count > 0 || DatabaseErrors.Count > 0;
-    //}
-
-    //public List<string> CustomerFormErrors => CustomerForm.GetErrors();
-    //public List<string> VehicleFormErrors => VehicleForm.GetErrors();
-    //public ErrorTracker DatabaseErrors => _db.Errors;
     public string[] VehicleStatusNames => _db.VehicleStatusNames;
     public string[] VehicleTypeNames => _db.VehicleTypeNames;
 
