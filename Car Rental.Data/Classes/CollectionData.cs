@@ -90,8 +90,8 @@ public class CollectionData : IData
     public IEnumerable<T> Get<T>(Expression<Func<T, bool>>? expression = null)
         where T : class =>
         expression is null
-            ? GetCollectionQueryable<T>().AsEnumerable()
-            : GetCollectionQueryable<T>().Where(expression.Compile()).AsEnumerable();
+            ? GetCollectionQueryable<T>()
+            : GetCollectionQueryable<T>().Where(expression.Compile());
 
     public void RentVehicle(int vehicleId, int customerId)
     {
