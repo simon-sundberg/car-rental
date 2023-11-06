@@ -8,8 +8,12 @@ namespace Car_Rental.Business.Classes;
 
 public class BookingProcessor
 {
-    readonly IData _db;
-    readonly ErrorTracker _et;
+    public Customer CustomerForm = new();
+    public bool Processing;
+    public int? RentingCustomerId;
+    public Vehicle VehicleForm = new();
+    private readonly IData _db;
+    private readonly ErrorTracker _et;
 
     public BookingProcessor(IData db, ErrorTracker et)
     {
@@ -17,18 +21,8 @@ public class BookingProcessor
         _et = et;
     }
 
-    public Customer CustomerForm = new();
-    public Vehicle VehicleForm = new();
-    public int? RentingCustomerId;
-    public bool Processing;
     public string[] VehicleStatusNames => _db.VehicleStatusNames;
     public string[] VehicleTypeNames => _db.VehicleTypeNames;
-
-    public T? Single<T>(Expression<Func<T, bool>> expression)
-        where T : class => _db.Single(expression);
-
-    public IEnumerable<T> Get<T>(Expression<Func<T, bool>>? expression = null)
-        where T : class => _db.Get(expression);
 
     public void AddCustomer()
     {
@@ -50,6 +44,9 @@ public class BookingProcessor
             _db.AddVehicle(VehicleForm);
     }
 
+    public IEnumerable<T> Get<T>(Expression<Func<T, bool>>? expression = null)
+        where T : class => _db.Get(expression);
+
     public async Task RentVehicle(int vehicleId, int customerId)
     {
         Processing = true;
@@ -58,8 +55,8 @@ public class BookingProcessor
         _db.RentVehicle(vehicleId, customerId);
     }
 
-    public void ReturnVehicle(int vehicleId)
-    {
-        _db.ReturnVehicle(vehicleId);
-    }
+    public void ReturnVehicle(int vehicleId) => _db.ReturnVehicle(vehicleId);
+
+    public T? Single<T>(Expression<Func<T, bool>> expression)
+        where T : class => _db.Single(expression);
 }

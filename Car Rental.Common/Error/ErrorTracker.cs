@@ -1,11 +1,10 @@
 ﻿using System.Data;
-using System.Linq.Expressions;
 
 namespace Car_Rental.Common.Error;
 
 public class ErrorTracker
 {
-    readonly List<Error> _errors = new();
+    private readonly List<Error> _errors = new();
 
     public void AddError(Error error)
     {
@@ -23,13 +22,13 @@ public class ErrorTracker
     {
         Error error = _errors.Single(e => e.Type == type);
         error.Active = true;
-        if (error.LoggingIsActive)
+        if (error.Logging)
         {
             Log(type, ex);
         }
     }
 
-    static void Log(ErrorTypes type, Exception? ex)
+    private static void Log(ErrorTypes type, Exception? ex)
     {
         Console.WriteLine($"ERROR: {type} {ex?.Message}");
     }

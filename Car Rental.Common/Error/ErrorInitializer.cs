@@ -1,11 +1,10 @@
-﻿using System.Data;
-using static Car_Rental.Common.Error.ErrorTypes;
+﻿using static Car_Rental.Common.Error.ErrorTypes;
 
 namespace Car_Rental.Common.Error;
 
 public static class ErrorInitializer
 {
-    public static void AddErrors(ErrorTracker eh)
+    public static void LoadErrors(ErrorTracker eh)
     {
         List<Error> errors = new();
         errors.AddRange(CustomerErrors);
@@ -17,7 +16,7 @@ public static class ErrorInitializer
             eh.AddError(error);
     }
 
-    static List<Error> GeneralErrors =>
+    private static List<Error> GeneralErrors =>
         new()
         {
             new Error(
@@ -29,7 +28,7 @@ public static class ErrorInitializer
             ),
         };
 
-    static List<Error> CustomerErrors =>
+    private static List<Error> CustomerErrors =>
         new()
         {
             new Error(
@@ -40,7 +39,7 @@ public static class ErrorInitializer
             ),
         };
 
-    static List<Error> CustomerFormErrors =>
+    private static List<Error> CustomerFormErrors =>
         new()
         {
             new Error(
@@ -63,7 +62,7 @@ public static class ErrorInitializer
             ),
         };
 
-    static List<Error> VehicleErrors =>
+    private static List<Error> VehicleErrors =>
         new()
         {
             new Error(
@@ -92,7 +91,7 @@ public static class ErrorInitializer
             ),
         };
 
-    static List<Error> VehicleFormErrors =>
+    private static List<Error> VehicleFormErrors =>
         new()
         {
             new Error(

@@ -13,5 +13,6 @@ public interface IBooking
     DateOnly DateRented { get; init; }
     DateOnly? DateReturned { get; }
     double? Cost { get; }
+
     void ReturnVehicle(Vehicle vehicle);
 }

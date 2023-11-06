@@ -4,7 +4,6 @@ using Car_Rental.Common.Error;
 using Car_Rental.Common.Extensions;
 using Car_Rental.Common.Interfaces;
 using Car_Rental.Data.Interfaces;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -14,31 +13,42 @@ namespace Car_Rental.Data.Classes;
 
 public class CollectionData : IData
 {
-    readonly List<Vehicle> _vehicles = new();
-    readonly List<IPerson> _persons = new();
-    readonly List<IBooking> _bookings = new();
-    readonly ErrorTracker _et;
+    private readonly List<IBooking> _bookings = new();
+    private readonly ErrorTracker _et;
+    private readonly List<IPerson> _persons = new();
+    private readonly List<Vehicle> _vehicles = new();
 
     public CollectionData(ErrorTracker et)
     {
         _et = et;
-        ErrorInitializer.AddErrors(et);
+        ErrorInitializer.LoadErrors(et);
         SeedData();
     }
 
-    void SeedData()
+    public int NextBookingId => _bookings.Count.Equals(0) ? 1 : _bookings.Max(b => b.Id) + 1;
+
+    public int NextPersonId => _persons.Count.Equals(0) ? 1 : _persons.Max(p => p.Id) + 1;
+
+    public int NextVehicleId => _vehicles.Count.Equals(0) ? 1 : _vehicles.Max(v => v.Id) + 1;
+
+    public void Add<T>(T item)
+        where T : class => GetCollectionReference<T>().Add(item);
+
+    public void AddCustomer(IPerson form)
     {
-        _vehicles.Add(new Car(1, "ABC123", "Volvo", 10000, 1, VehicleTypes.Combi, 200));
-        _vehicles.Add(new Car(2, "DEF456", "Saab", 20000, 1, VehicleTypes.Sedan, 100));
-        _vehicles.Add(new Car(3, "GHI789", "Tesla", 1000, 3, VehicleTypes.Sedan, 100));
-        _vehicles.Add(new Car(4, "JKL012", "Jeep", 5000, 1.5, VehicleTypes.Van, 300));
-        _vehicles.Add(new Motorcycle(5, "MNO234", "Yamaha", 30000, 0.5, 50));
-        _persons.Add(new Customer(1, "12345", "Doe", "John"));
-        _persons.Add(new Customer(2, "98765", "Doe", "Jane"));
-        RentVehicle(3, 1);
-        RentVehicle(4, 2);
-        _bookings[1].KmDistance = 0;
-        _bookings[1].ReturnVehicle(_vehicles[3]);
+        _et.InactivateError(CUSTOMER_DUPLICATE_SSN);
+        form.CheckErrors(_et);
+        List<Error> errors = _et.GetErrors(
+            e => e.Active && e.Source == ErrorSources.AddCustomerForm
+        );
+        if (errors.Count > 0)
+            return;
+        if (Single<IPerson>(v => v.SSN == form.SSN.ToUpper()) is not null)
+        {
+            _et.ActivateError(CUSTOMER_DUPLICATE_SSN);
+            return;
+        }
+        Add<IPerson>(new Customer(NextPersonId, form.SSN, form.LastName, form.FirstName));
     }
 
     public void AddVehicle(Vehicle form)
@@ -77,22 +87,11 @@ public class CollectionData : IData
         );
     }
 
-    public void AddCustomer(IPerson form)
-    {
-        _et.InactivateError(CUSTOMER_DUPLICATE_SSN);
-        form.CheckErrors(_et);
-        List<Error> errors = _et.GetErrors(
-            e => e.Active && e.Source == ErrorSources.AddCustomerForm
-        );
-        if (errors.Count > 0)
-            return;
-        if (Single<IPerson>(v => v.SSN == form.SSN.ToUpper()) is not null)
-        {
-            _et.ActivateError(CUSTOMER_DUPLICATE_SSN);
-            return;
-        }
-        Add<IPerson>(new Customer(NextPersonId, form.SSN, form.LastName, form.FirstName));
-    }
+    public IEnumerable<T> Get<T>(Expression<Func<T, bool>>? expression = null)
+        where T : class =>
+        expression is null
+            ? GetCollectionQueryable<T>().AsEnumerable()
+            : GetCollectionQueryable<T>().Where(expression.Compile()).AsEnumerable();
 
     public void RentVehicle(int vehicleId, int customerId)
     {
@@ -144,21 +143,8 @@ public class CollectionData : IData
         }
     }
 
-    public int NextVehicleId => _vehicles.Count.Equals(0) ? 1 : _vehicles.Max(v => v.Id) + 1;
-    public int NextBookingId => _bookings.Count.Equals(0) ? 1 : _bookings.Max(b => b.Id) + 1;
-    public int NextPersonId => _persons.Count.Equals(0) ? 1 : _persons.Max(p => p.Id) + 1;
-
-    public IEnumerable<T> Get<T>(Expression<Func<T, bool>>? expression = null)
-        where T : class =>
-        expression is null
-            ? GetCollectionQueryable<T>().AsEnumerable()
-            : GetCollectionQueryable<T>().Where(expression.Compile()).AsEnumerable();
-
     public T? Single<T>(Expression<Func<T, bool>> expression)
         where T : class => GetCollectionQueryable<T>().SingleOrDefault(expression.Compile());
-
-    public void Add<T>(T item)
-        where T : class => GetCollectionReference<T>().Add(item);
 
     private IQueryable<T> GetCollectionQueryable<T>()
         where T : class => GetCollectionReference<T>().AsQueryable();
@@ -171,5 +157,20 @@ public class CollectionData : IData
             .Single(f => f.FieldType == typeof(List<T>));
         object? value = collections.GetValue(this) ?? throw new InvalidDataException();
         return (List<T>)value;
+    }
+
+    private void SeedData()
+    {
+        _vehicles.Add(new Car(1, "ABC123", "Volvo", 10000, 1, VehicleTypes.Combi, 200));
+        _vehicles.Add(new Car(2, "DEF456", "Saab", 20000, 1, VehicleTypes.Sedan, 100));
+        _vehicles.Add(new Car(3, "GHI789", "Tesla", 1000, 3, VehicleTypes.Sedan, 100));
+        _vehicles.Add(new Car(4, "JKL012", "Jeep", 5000, 1.5, VehicleTypes.Van, 300));
+        _vehicles.Add(new Motorcycle(5, "MNO234", "Yamaha", 30000, 0.5, 50));
+        _persons.Add(new Customer(1, "12345", "Doe", "John"));
+        _persons.Add(new Customer(2, "98765", "Doe", "Jane"));
+        RentVehicle(3, 1);
+        RentVehicle(4, 2);
+        _bookings[1].KmDistance = 0;
+        _bookings[1].ReturnVehicle(_vehicles[3]);
     }
 }

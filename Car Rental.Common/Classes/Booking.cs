@@ -6,16 +6,6 @@ namespace Car_Rental.Common.Classes;
 
 public class Booking : IBooking
 {
-    public int Id { get; init; }
-    public int VehicleId { get; init; }
-    public int CustomerId { get; init; }
-    public int KmRented { get; init; }
-    public DateOnly DateRented { get; init; }
-    public int? KmDistance { get; set; }
-    public int? KmReturned { get; private set; }
-    public DateOnly? DateReturned { get; private set; }
-    public double? Cost { get; private set; }
-
     public Booking(int id, int vehicleId, int customerId, int kmRented)
     {
         Id = id;
@@ -24,6 +14,16 @@ public class Booking : IBooking
         KmRented = kmRented;
         DateRented = DateOnly.FromDateTime(DateTime.Today);
     }
+
+    public double? Cost { get; private set; }
+    public int CustomerId { get; init; }
+    public DateOnly DateRented { get; init; }
+    public DateOnly? DateReturned { get; private set; }
+    public int Id { get; init; }
+    public int? KmDistance { get; set; }
+    public int KmRented { get; init; }
+    public int? KmReturned { get; private set; }
+    public int VehicleId { get; init; }
 
     public void ReturnVehicle(Vehicle vehicle)
     {
