@@ -29,9 +29,9 @@ public class Vehicle
     public double CostDay { get; set; }
     public double CostKm { get; set; }
     public int Id { get; init; }
-    public string Make { get; set; } = String.Empty;
+    public string Make { get; set; } = string.Empty;
     public int Odometer { get; set; }
-    public string RegNo { get; set; } = String.Empty;
+    public string RegNo { get; set; } = string.Empty;
     public VehicleStatuses Status { get; set; } = VehicleStatuses.Available;
     public VehicleTypes? Type { get; set; }
 }
