@@ -28,6 +28,9 @@ public class ErrorTracker
     public List<Error> GetErrors(Func<Error, bool> expression) =>
         _errors.Where(expression).ToList();
 
+    public bool HasErrors(ErrorSources source) =>
+        GetErrors(e => e.Active && e.Source == source).Count > 0;
+
     public void InactivateError(ErrorTypes type) =>
         _errors.Single(e => e.Type == type).Active = false;
 

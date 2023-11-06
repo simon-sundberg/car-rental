@@ -24,25 +24,9 @@ public class BookingProcessor
     public string[] VehicleStatusNames => _db.VehicleStatusNames;
     public string[] VehicleTypeNames => _db.VehicleTypeNames;
 
-    public void AddCustomer()
-    {
-        CustomerForm.CheckErrors(_et);
-        List<Error> errors = _et.GetErrors(
-            e => e.Active && e.Source == ErrorSources.AddCustomerForm
-        );
-        if (errors.Count == 0)
-            _db.AddCustomer(CustomerForm);
-    }
+    public void AddCustomer() => _db.AddCustomer(CustomerForm);
 
-    public void AddVehicle()
-    {
-        VehicleForm.CheckErrors(_et);
-        List<Error> errors = _et.GetErrors(
-            e => e.Active && e.Source == ErrorSources.AddVehicleForm
-        );
-        if (errors.Count == 0)
-            _db.AddVehicle(VehicleForm);
-    }
+    public void AddVehicle() => _db.AddVehicle(VehicleForm);
 
     public IEnumerable<T> Get<T>(Expression<Func<T, bool>>? expression = null)
         where T : class => _db.Get(expression);

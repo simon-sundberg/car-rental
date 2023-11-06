@@ -38,10 +38,7 @@ public class CollectionData : IData
     {
         _et.InactivateError(CUSTOMER_DUPLICATE_SSN);
         form.CheckErrors(_et);
-        List<Error> errors = _et.GetErrors(
-            e => e.Active && e.Source == ErrorSources.AddCustomerForm
-        );
-        if (errors.Count > 0)
+        if (_et.HasErrors(ErrorSources.AddCustomerForm))
             return;
         if (Single<IPerson>(v => v.SSN == form.SSN.ToUpper()) is not null)
         {
@@ -55,10 +52,7 @@ public class CollectionData : IData
     {
         _et.InactivateError(VEHICLE_DUPLICATE_REGNO);
         form.CheckErrors(_et);
-        List<Error> errors = _et.GetErrors(
-            e => e.Active && e.Source == ErrorSources.AddVehicleForm
-        );
-        if (errors.Count > 0)
+        if (_et.HasErrors(ErrorSources.AddVehicleForm))
             return;
         if (Single<Vehicle>(v => v.RegNo == form.RegNo.ToUpper()) is not null)
         {
@@ -137,9 +131,9 @@ public class CollectionData : IData
         {
             _et.ActivateError(CRITICAL_ERROR, ex);
         }
-        catch (NullReferenceException)
+        catch (NullReferenceException ex)
         {
-            _et.ActivateError(VEHICLE_RENTING_DISTANCE_NULL_OR_NEGATIVE);
+            _et.ActivateError(VEHICLE_RENTING_DISTANCE_NULL_OR_NEGATIVE, ex);
         }
     }
 
