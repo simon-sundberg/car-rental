@@ -4,15 +4,14 @@ namespace Car_Rental.Common.Interfaces;
 
 public interface IBooking
 {
-    int Id { get; init; }
-    int VehicleId { get; init; }
+    double? Cost { get; }
     int CustomerId { get; init; }
-    int KmRented { get; init; }
-    int? KmDistance { get; set; }
-    int? KmReturned { get; }
     DateOnly DateRented { get; init; }
     DateOnly? DateReturned { get; }
-    double? Cost { get; }
-
+    int Id { get; init; }
+    int? KmDistance { get; set; }
+    int KmRented { get; init; }
+    int? KmReturned { get; }
+    int VehicleId { get; init; }
     void ReturnVehicle(Vehicle vehicle);
 }

@@ -4,30 +4,6 @@ namespace Car_Rental.Common.Error;
 
 public static class ErrorInitializer
 {
-    public static void LoadErrors(ErrorTracker eh)
-    {
-        List<Error> errors = new();
-        errors.AddRange(CustomerErrors);
-        errors.AddRange(CustomerFormErrors);
-        errors.AddRange(VehicleErrors);
-        errors.AddRange(VehicleFormErrors);
-        errors.AddRange(GeneralErrors);
-        foreach (Error error in errors)
-            eh.AddError(error);
-    }
-
-    private static List<Error> GeneralErrors =>
-        new()
-        {
-            new Error(
-                CRITICAL_ERROR,
-                "Something went wrong. Please contact the administrator.",
-                ErrorProjects.None,
-                ErrorSources.None,
-                true
-            ),
-        };
-
     private static List<Error> CustomerErrors =>
         new()
         {
@@ -59,6 +35,18 @@ public static class ErrorInitializer
                 "First Name is required",
                 ErrorProjects.App,
                 ErrorSources.AddCustomerForm
+            ),
+        };
+
+    private static List<Error> GeneralErrors =>
+        new()
+        {
+            new Error(
+                CRITICAL_ERROR,
+                "Something went wrong. Please contact the administrator.",
+                ErrorProjects.None,
+                ErrorSources.None,
+                true
             ),
         };
 
@@ -131,4 +119,16 @@ public static class ErrorInitializer
                 ErrorSources.AddVehicleForm
             ),
         };
+
+    public static void LoadErrors(ErrorTracker eh)
+    {
+        List<Error> errors = new();
+        errors.AddRange(CustomerErrors);
+        errors.AddRange(CustomerFormErrors);
+        errors.AddRange(VehicleErrors);
+        errors.AddRange(VehicleFormErrors);
+        errors.AddRange(GeneralErrors);
+        foreach (Error error in errors)
+            eh.AddError(error);
+    }
 }

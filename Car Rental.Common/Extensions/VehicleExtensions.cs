@@ -6,9 +6,6 @@ namespace Car_Rental.Common.Extensions;
 
 public static class VehicleExtensions
 {
-    public static int Duration(this DateOnly startDate, DateOnly endDate) =>
-        endDate.DayNumber - startDate.DayNumber;
-
     public static void CheckErrors(this Vehicle vehicle, ErrorTracker et)
     {
         et.InactivateErrors(ErrorSources.AddVehicleForm);
@@ -25,4 +22,7 @@ public static class VehicleExtensions
         if (vehicle.CostDay <= 0)
             et.ActivateError(VEHICLE_COSTDAY_NOT_POSITIVE);
     }
+
+    public static int Duration(this DateOnly startDate, DateOnly endDate) =>
+        endDate.DayNumber - startDate.DayNumber;
 }

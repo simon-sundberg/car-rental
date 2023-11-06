@@ -146,9 +146,6 @@ public class CollectionData : IData
     public T? Single<T>(Expression<Func<T, bool>> expression)
         where T : class => GetCollectionQueryable<T>().SingleOrDefault(expression.Compile());
 
-    private IQueryable<T> GetCollectionQueryable<T>()
-        where T : class => GetCollection<T>().AsQueryable();
-
     private List<T> GetCollection<T>()
         where T : class
     {
@@ -158,6 +155,9 @@ public class CollectionData : IData
         object? value = collections.GetValue(this) ?? throw new InvalidDataException();
         return (List<T>)value;
     }
+
+    private IQueryable<T> GetCollectionQueryable<T>()
+        where T : class => GetCollection<T>().AsQueryable();
 
     private void SeedData()
     {

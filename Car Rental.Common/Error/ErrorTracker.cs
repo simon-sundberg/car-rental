@@ -6,6 +6,16 @@ public class ErrorTracker
 {
     private readonly List<Error> _errors = new();
 
+    public void ActivateError(ErrorTypes type, Exception? ex = null)
+    {
+        Error error = _errors.Single(e => e.Type == type);
+        error.Active = true;
+        if (error.Logging)
+        {
+            Log(type, ex);
+        }
+    }
+
     public void AddError(Error error)
     {
         if (GetError(e => e.Type == error.Type) is not null)
@@ -18,24 +28,14 @@ public class ErrorTracker
     public List<Error> GetErrors(Func<Error, bool> expression) =>
         _errors.Where(expression).ToList();
 
-    public void ActivateError(ErrorTypes type, Exception? ex = null)
-    {
-        Error error = _errors.Single(e => e.Type == type);
-        error.Active = true;
-        if (error.Logging)
-        {
-            Log(type, ex);
-        }
-    }
-
-    private static void Log(ErrorTypes type, Exception? ex)
-    {
-        Console.WriteLine($"ERROR: {type} {ex?.Message}");
-    }
-
     public void InactivateError(ErrorTypes type) =>
         _errors.Single(e => e.Type == type).Active = false;
 
     public void InactivateErrors(ErrorSources source) =>
         _errors.FindAll(e => e.Source == source).ForEach(e => e.Active = false);
+
+    private static void Log(ErrorTypes type, Exception? ex)
+    {
+        Console.WriteLine($"ERROR: {type} {ex?.Message}");
+    }
 }
