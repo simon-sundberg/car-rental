@@ -1,0 +1,8 @@
+﻿@page "/error"
+@using Car_Rental.Common.Error;
+@using static Car_Rental.Common.Error.ErrorTypes;
+@inject ErrorTracker et;
+
+<h1>Error</h1>
+<p>@et.GetError(e => e.Type == CRITICAL_ERROR)?.Message</p>
+<p><a href="/">Click here to reload the page</a></p>

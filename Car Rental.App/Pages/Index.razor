@@ -8,18 +8,14 @@
 
 @inject BookingProcessor bp;
 @inject ErrorTracker et;
-
-<PageTitle>Car Rental</PageTitle>
+@inject NavigationManager nm;
 
 @{
-    Error? criticalError = et.GetError(e => e.Type == CRITICAL_ERROR && e.Active);
-    if (criticalError is not null)
-    {
-        <h1>Error</h1>
-        <p>@criticalError.Message</p>
-        return;
-    }
+    if (et.GetError(e => e.Type == CRITICAL_ERROR && e.Active) is not null)
+        nm.NavigateTo("/error");
 }
+
+<PageTitle>Car Rental</PageTitle>
 
 <h1>Car Rental</h1>
 
