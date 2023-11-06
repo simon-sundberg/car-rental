@@ -4,6 +4,8 @@ using Car_Rental.Common.Error;
 using Car_Rental.Common.Extensions;
 using Car_Rental.Common.Interfaces;
 using Car_Rental.Data.Interfaces;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq.Expressions;
 using System.Reflection;
 using static Car_Rental.Common.Error.ErrorTypes;
@@ -47,7 +49,7 @@ public class CollectionData : IData
             e => e.Active && e.Source == ErrorSources.AddVehicleForm
         );
         if (errors.Count > 0)
-            throw new ArgumentException(String.Join(" & ", errors));
+            return;
         if (Single<Vehicle>(v => v.RegNo == form.RegNo.ToUpper()) is not null)
         {
             _et.ActivateError(VEHICLE_DUPLICATE_REGNO);
@@ -74,7 +76,7 @@ public class CollectionData : IData
             e => e.Active && e.Source == ErrorSources.AddCustomerForm
         );
         if (errors.Count > 0)
-            throw new ArgumentException(String.Join(" & ", errors));
+            return;
         if (Single<IPerson>(v => v.SSN == form.SSN.ToUpper()) is not null)
         {
             _et.ActivateError(CUSTOMER_DUPLICATE_SSN);
@@ -86,42 +88,48 @@ public class CollectionData : IData
     public void RentVehicle(int vehicleId, int customerId)
     {
         _et.InactivateError(VEHICLE_ALREADY_BOOKED);
-        IPerson customer =
-            Single<IPerson>(c => c.Id == customerId)
-            ?? throw new InvalidOperationException("Customer not found for the given customerId");
-        Vehicle vehicle =
-            Single<Vehicle>(v => v.Id == vehicleId)
-            ?? throw new InvalidOperationException("Vehicle not found for the given vehicleId");
-        if (vehicle.Status == VehicleStatuses.Booked)
+        try
         {
-            _et.ActivateError(VEHICLE_ALREADY_BOOKED);
-            return;
+            IPerson customer =
+                Single<IPerson>(c => c.Id == customerId)
+                ?? throw new KeyNotFoundException("Customer not found for the given customerId");
+            Vehicle vehicle =
+                Single<Vehicle>(v => v.Id == vehicleId)
+                ?? throw new KeyNotFoundException("Vehicle not found for the given vehicleId");
+            if (vehicle.Status == VehicleStatuses.Booked)
+            {
+                _et.ActivateError(VEHICLE_ALREADY_BOOKED);
+                return;
+            }
+            Booking booking = new(NextBookingId, vehicle.Id, customer.Id, vehicle.Odometer);
+            Add<IBooking>(booking);
+            vehicle.BookingId = booking.Id;
+            vehicle.Status = VehicleStatuses.Booked;
         }
-        Booking booking = new(NextBookingId, vehicle.Id, customer.Id, vehicle.Odometer);
-        Add<IBooking>(booking);
-        vehicle.BookingId = booking.Id;
-        vehicle.Status = VehicleStatuses.Booked;
+        catch (KeyNotFoundException ex)
+        {
+            _et.ActivateError(CRITICAL_ERROR, ex);
+        }
     }
 
     public void ReturnVehicle(int vehicleId)
     {
         _et.InactivateError(VEHICLE_RENTING_DISTANCE_NULL_OR_NEGATIVE);
-
         try
         {
             Vehicle vehicle =
-    Single<Vehicle>(v => v.Id == vehicleId)
-    ?? throw new InvalidOperationException("Vehicle not found for the given vehicleId.");
+                Single<Vehicle>(v => v.Id == vehicleId)
+                ?? throw new KeyNotFoundException("Vehicle not found for the given vehicleId.");
             IBooking booking =
                 Single<IBooking>(b => b.Id == vehicle.BookingId)
-                ?? throw new InvalidOperationException("Booking not found for the given vehicleId.");
+                ?? throw new KeyNotFoundException("Booking not found for the given vehicleId.");
             booking.ReturnVehicle(vehicle);
         }
-        catch (InvalidOperationException)
+        catch (KeyNotFoundException ex)
         {
-            //_et.ActivateError
+            _et.ActivateError(CRITICAL_ERROR, ex);
         }
-        catch (InvalidDataException)
+        catch (NullReferenceException)
         {
             _et.ActivateError(VEHICLE_RENTING_DISTANCE_NULL_OR_NEGATIVE);
         }

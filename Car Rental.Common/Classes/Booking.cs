@@ -28,7 +28,7 @@ public class Booking : IBooking
     public void ReturnVehicle(Vehicle vehicle)
     {
         if (KmDistance is null || KmDistance < 0)
-            throw new InvalidDataException("Distance input value is null or negative.");
+            throw new NullReferenceException("Distance input value is null or negative.");
 
         int kmDistance = (int)KmDistance;
         DateOnly date = DateOnly.FromDateTime(DateTime.Today);

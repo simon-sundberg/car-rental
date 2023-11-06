@@ -53,7 +53,7 @@ public class BookingProcessor
     public async Task RentVehicle(int vehicleId, int customerId)
     {
         Processing = true;
-        await Task.Delay(2000);
+        await Task.Delay(10000);
         Processing = false;
         _db.RentVehicle(vehicleId, customerId);
     }

@@ -2,12 +2,24 @@
 @using Car_Rental.Business.Classes;
 @using Car_Rental.Common.Classes;
 @using Car_Rental.Common.Error;
+@using static Car_Rental.Common.Error.ErrorTypes;
 @using Car_Rental.Common.Interfaces;
 @using Car_Rental.Common.Enums;
+
 @inject BookingProcessor bp;
 @inject ErrorTracker et;
 
 <PageTitle>Car Rental</PageTitle>
+
+@{
+    Error? criticalError = et.GetError(e => e.Type == CRITICAL_ERROR && e.Active);
+    if (criticalError is not null)
+    {
+        <h1>Error</h1>
+        <p>@criticalError.Message</p>
+        return;
+    }
+}
 
 <h1>Car Rental</h1>
 
