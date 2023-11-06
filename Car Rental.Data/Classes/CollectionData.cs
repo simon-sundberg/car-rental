@@ -32,7 +32,7 @@ public class CollectionData : IData
     public int NextVehicleId => _vehicles.Count.Equals(0) ? 1 : _vehicles.Max(v => v.Id) + 1;
 
     public void Add<T>(T item)
-        where T : class => GetCollectionReference<T>().Add(item);
+        where T : class => GetCollection<T>().Add(item);
 
     public void AddCustomer(IPerson form)
     {
@@ -147,9 +147,9 @@ public class CollectionData : IData
         where T : class => GetCollectionQueryable<T>().SingleOrDefault(expression.Compile());
 
     private IQueryable<T> GetCollectionQueryable<T>()
-        where T : class => GetCollectionReference<T>().AsQueryable();
+        where T : class => GetCollection<T>().AsQueryable();
 
-    private List<T> GetCollectionReference<T>()
+    private List<T> GetCollection<T>()
         where T : class
     {
         FieldInfo? collections = GetType()
