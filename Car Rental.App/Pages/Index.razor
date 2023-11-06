@@ -23,12 +23,11 @@
 
 <h1>Car Rental</h1>
 
-<ErrorList Errors="et.GetErrors(e =>
-            e.Active
-            && e.Source is ErrorSources.AddVehicle
-            or ErrorSources.AddVehicleForm
-            or ErrorSources.RentVehicle
-            or ErrorSources.ReturnVehicle)" />
+<ErrorList Errors="et.GetErrors(e => e.Active
+                                     && e.Source is ErrorSources.AddVehicle
+                                     or ErrorSources.AddVehicleForm
+                                     or ErrorSources.RentVehicle
+                                     or ErrorSources.ReturnVehicle)" />
 
 <table class="vehicles table table-borderless border border-dark table-hover caption-top w-auto">
     <caption class="fs-4 text-dark">Vehicles</caption>
@@ -104,13 +103,13 @@
                             }
                         </select>
                         <button disabled="@(bp.RentingCustomerId is null || bp.Processing)"
-                        @onclick="(async() => {
-                                if (bp.RentingCustomerId is null) {
-                                    et.ActivateError(ErrorTypes.VEHICLE_RENTING_CUSTOMER_ID_NULL);
-                                    return;
-                                }
-                                await bp.RentVehicle(vehicle.Id, (int)bp.RentingCustomerId);
-                        })"
+                                @onclick="(async() => {
+                                    if (bp.RentingCustomerId is null) {
+                                        et.ActivateError(ErrorTypes.VEHICLE_RENTING_CUSTOMER_ID_NULL);
+                                        return;
+                                    }
+                                    await bp.RentVehicle(vehicle.Id, (int)bp.RentingCustomerId);
+                                })"
                                 class="btn btn-sm btn-outline-primary">
                             Rent
                         </button>
@@ -168,9 +167,9 @@
     }
 </table>
 
-<ErrorList Errors="et.GetErrors(e =>
-            e.Active
-            && e.Source is ErrorSources.AddCustomer or ErrorSources.AddCustomerForm)" />
+<ErrorList Errors="et.GetErrors(e => e.Active
+                                     && e.Source is ErrorSources.AddCustomer 
+                                                 or ErrorSources.AddCustomerForm)" />
 
 <table class="customers table-hover table border border-secondary caption-top w-auto">
     <caption class="fs-4 text-dark">Customers</caption>

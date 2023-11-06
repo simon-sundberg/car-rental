@@ -10,7 +10,7 @@ public class Car : Vehicle
         string make,
         int odometer,
         double costKm,
-        VehicleTypes type,
+        VehicleTypes? type,
         double costDay
     )
         : base(id, regNo, make, odometer, costKm, type, costDay) { }

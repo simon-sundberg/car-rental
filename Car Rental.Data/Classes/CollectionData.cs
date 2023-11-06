@@ -28,11 +28,11 @@ public class CollectionData : IData
 
     void SeedData()
     {
-        _vehicles.Add(new Vehicle(1, "ABC123", "Volvo", 10000, 1, VehicleTypes.Combi, 200));
-        _vehicles.Add(new Vehicle(2, "DEF456", "Saab", 20000, 1, VehicleTypes.Sedan, 100));
-        _vehicles.Add(new Vehicle(3, "GHI789", "Tesla", 1000, 3, VehicleTypes.Sedan, 100));
-        _vehicles.Add(new Vehicle(4, "JKL012", "Jeep", 5000, 1.5, VehicleTypes.Van, 300));
-        _vehicles.Add(new Vehicle(5, "MNO234", "Yamaha", 30000, 0.5, VehicleTypes.Motorcycle, 50));
+        _vehicles.Add(new Car(1, "ABC123", "Volvo", 10000, 1, VehicleTypes.Combi, 200));
+        _vehicles.Add(new Car(2, "DEF456", "Saab", 20000, 1, VehicleTypes.Sedan, 100));
+        _vehicles.Add(new Car(3, "GHI789", "Tesla", 1000, 3, VehicleTypes.Sedan, 100));
+        _vehicles.Add(new Car(4, "JKL012", "Jeep", 5000, 1.5, VehicleTypes.Van, 300));
+        _vehicles.Add(new Motorcycle(5, "MNO234", "Yamaha", 30000, 0.5, 50));
         _persons.Add(new Customer(1, "12345", "Doe", "John"));
         _persons.Add(new Customer(2, "98765", "Doe", "Jane"));
         RentVehicle(3, 1);
@@ -56,15 +56,24 @@ public class CollectionData : IData
             return;
         }
         Add<Vehicle>(
-            new Vehicle(
-                NextVehicleId,
-                form.RegNo.ToUpper(),
-                form.Make,
-                form.Odometer,
-                form.CostKm,
-                form.Type,
-                form.CostDay
-            )
+            form.Type == VehicleTypes.Motorcycle
+                ? new Motorcycle(
+                    NextVehicleId,
+                    form.RegNo.ToUpper(),
+                    form.Make,
+                    form.Odometer,
+                    form.CostKm,
+                    form.CostDay
+                )
+                : new Car(
+                    NextVehicleId,
+                    form.RegNo.ToUpper(),
+                    form.Make,
+                    form.Odometer,
+                    form.CostKm,
+                    form.Type,
+                    form.CostDay
+                )
         );
     }
 
