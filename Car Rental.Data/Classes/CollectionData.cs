@@ -143,11 +143,11 @@ public class CollectionData : IData
     private List<T> GetCollection<T>()
         where T : class
     {
-        FieldInfo? collections = GetType()
-            .GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
-            .Single(f => f.FieldType == typeof(List<T>));
-        object? value = collections.GetValue(this) ?? throw new InvalidDataException();
-        return (List<T>)value;
+        FieldInfo[] fields = GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
+        FieldInfo field = fields.Single(f => f.FieldType == typeof(List<T>));
+        object value = field.GetValue(this) ?? throw new InvalidDataException();
+        List<T> collection = (List<T>)value;
+        return collection;
     }
 
     private IQueryable<T> GetCollectionQueryable<T>()
